@@ -1,30 +1,31 @@
 import Link from 'next/link'
 import React from 'react'
+import { BackgroundLines } from './ui/background-lines'
 import { Button } from './ui/button'
+
 
 const Header = () => {
     return (
-        <div className='flex items-center h-[86vh]'>
-            <div className="flex flex-col gap-4">
-                <div className="flex flex-col leading-tight">
-                    <h1 className="header text-[4rem]">
-                        Clarity for Your Study Workflow
-                    </h1>
-                    <p className="body text-lg opacity-50">Organize notes, PDFs, and study materials in one place with AI-powered insights.</p>
-                </div>
-                <div className="flex items-center gap-8">
-                    <button className="relative inline-flex h-12 overflow-hidden rounded-md p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
-                        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#007bff_0%,#40E0D0_50%,#ffffff_100%)]" />
-                        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-md bg-[#111111] px-4 py-2 text-sm font-medium text-white backdrop-blur-3xl">
-                            Start Uploading
-                        </span>
-                    </button>
-                    <Link href={"/about"} className='opacity-30'>
-                        Learn more
-                    </Link>
+        <BackgroundLines className="flex items-center w-full flex-col px-4 xl:h-[85vh] lg:h-[85vh] md:h-[90vh] sm:h-[90vh] h-[90vh] relative">
+            <div className='h-full flex items-center relative z-100'>
+                <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-1 md:gap-2 lg:gap-2.5 xl:gap-0">
+                        <h1 className="header xl:text-[7rem] lg:text-[6rem] md:text-[4.5rem] sm:text-[4rem] text-[3rem] text-center xl:leading-[6.5rem] lg:leading-[5.5rem] md:leading-[4.5rem] sm:leading-[4rem] leading-[3rem]">
+                            Clarity for Your Study Workflow
+                        </h1>
+                        <p className="body xl:text-xl lg:text-lg md:text-md sm:text-md text-sm font-thin opacity-50 text-center">Organize notes, PDFs, and study materials in one place with AI-powered insights.</p>
+                    </div>
+                    <div className="flex items-center justify-center md:gap-8 gap-4">
+                        <Button asChild variant="primary" className="bg-[#cf0] md:px-8 px-12 py-2">
+                            <Link href={"/newupload"} className='body font-semibold text-[#111]'>Upload</Link>
+                        </Button>
+                        <Button asChild variant="outline" className="bg-[#1111]">
+                            <Link href={"/"}>Learn More</Link>
+                        </Button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </BackgroundLines>
     )
 }
 
