@@ -18,7 +18,7 @@ const Dropmenu = ({ dropdownMenu, icon }) => {
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {dropdownMenu.map((item) => (
-                    <DropdownMenuItem asChild>
+                    <DropdownMenuItem asChild key={item.name}>
                         <Link href={item.href}>{item.name}</Link>
                     </DropdownMenuItem>
                 ))}
