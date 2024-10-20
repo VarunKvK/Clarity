@@ -6,7 +6,7 @@ import { Button } from './ui/button'
 
 const Header = () => {
     return (
-        <BackgroundLines className="flex items-center w-full flex-col px-4 xl:h-[85vh] lg:h-[85vh] md:h-[90vh] sm:h-[90vh] h-[90vh] relative">
+        <BackgroundLines className="xl:max-w-6xl lg:max-w-4xl md:max-w-2xl max-w-2xl flex items-center w-full flex-col px-4 h-[90vh] relative">
             <div className='h-full flex items-center relative z-100'>
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col gap-1 md:gap-2 lg:gap-2.5 xl:gap-0">
@@ -17,10 +17,7 @@ const Header = () => {
                     </div>
                     <div className="flex items-center justify-center md:gap-8 gap-4">
                         <Button asChild variant="primary" className="bg-[#cf0] md:px-8 px-12 py-2">
-                            <Link href={"/newupload"} className='body font-semibold text-[#111]'>Upload</Link>
-                        </Button>
-                        <Button asChild variant="outline" className="bg-[#1111]">
-                            <Link href={"/"}>Learn More</Link>
+                            <Link href={"/newupload"} className='body font-semibold text-[#111]'>Upload Your PDFs</Link>
                         </Button>
                     </div>
                 </div>

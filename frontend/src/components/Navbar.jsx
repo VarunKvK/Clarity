@@ -6,12 +6,12 @@ import Dropmenu from './mini_components/Dropmenu'
 
 const Navbar = () => {
     const navcomponents = [
-        { name: "About", href: "/about" },
-        { name: "Upload", href: "/newupload" },
-        { name: "Profile", href: "/profile" },
+        { name: "Why Clarity?", href: "#why" },
+        { name: "Add Files", href: "/newupload" },
+        { name: "My Space", href: "/profile" },
     ]
     return (
-        <nav className='header font-medium flex items-center justify-between md:py-8 py-6 md:px-4 px-6 w-full relative z-20'>
+        <nav className='xl:max-w-6xl lg:max-w-4xl md:max-w-2xl max-w-2xl header font-medium flex items-center justify-between md:py-8 py-6 md:px-4 px-6  w-full relative z-20'>
             <Link href={"/"} className='font-semibold text-lg hidden md:block'>Clarity</Link>
             {/* Menubar for resonsivenss */}
             <Link href={"/"} className='font-semibold text-[1.8rem] md:hidden block'>C</Link>
