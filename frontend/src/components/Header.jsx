@@ -17,7 +17,7 @@ const Header = () => {
                     </div>
                     <div className="flex items-center justify-center md:gap-8 gap-4">
                         <Button asChild variant="primary" className="bg-[#cf0] md:px-8 px-12 py-2">
-                            <Link href={"/newupload"} className='body font-semibold text-[#111]'>Upload Your PDFs</Link>
+                            <Link href={"/newuploads"} className='body font-semibold text-[#111]'>Upload Your PDFs</Link>
                         </Button>
                     </div>
                 </div>

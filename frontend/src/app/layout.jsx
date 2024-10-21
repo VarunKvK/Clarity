@@ -1,4 +1,6 @@
+import Navbar from "@/components/Navbar";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster"
 
 export const metadata = {
   title: "Clarity",
@@ -8,8 +10,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="bg-[#111111] text-white flex justify-center relative z-100">
+      <body className="bg-[#111111] text-white flex flex-col w-full items-center justify-center relative z-100">
+        <Navbar />
         {children}
+        <Toaster />
       </body>
     </html>
   );
