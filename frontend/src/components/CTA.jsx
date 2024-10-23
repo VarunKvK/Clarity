@@ -9,7 +9,7 @@ const CTA = () => {
                     <h1 className="header xl:text-[7rem] lg:text-[6rem] md:text-[5rem] sm:text-[4rem] text-[2.5rem] text-center">
                         Ready for it?
                     </h1>
-                    <FileUploader/>
+                    <FileUploader />
                 </div>
             </div>
         </div>
