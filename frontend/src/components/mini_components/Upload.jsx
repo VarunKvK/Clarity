@@ -4,6 +4,7 @@ import { FileUpload } from "@/components/ui/file-upload";
 import { useToast } from '@/hooks/use-toast'
 import { CheckCircle } from "lucide-react";
 
+
 export function FileUploader({ uploaded, setFiles }) {
   const { toast } = useToast()
 

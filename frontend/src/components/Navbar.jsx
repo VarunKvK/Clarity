@@ -3,11 +3,13 @@ import { MenuIcon, UserCircle2 } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import Dropmenu from './mini_components/Dropmenu'
+import { SignInButton, useAuth } from '@clerk/nextjs'
 
 const Navbar = () => {
+    const { isSignedIn } = useAuth();
     const navcomponents = [
         { name: "Why Clarity?", href: "#why" },
-        { name: "Add Files", href: "/newupload" },
+        { name: "Add Files", href: "/newuploads" },
         { name: "My Space", href: "/profile" },
     ]
     return (
@@ -20,14 +22,23 @@ const Navbar = () => {
                 {navcomponents.map((item) => (
                     <Link href={item.href} key={item.name} className='ml-4'>{item.name}</Link>
                 ))}
-            </div>
-            <Link href={"/"} className='hidden md:block'>
+            </div>  
+
+            {!isSignedIn && <div className="items-center gap-4 hidden md:flex">
+                <SignInButton className="bg-[#cf0] rounded-md px-6 py-2 text-[#111]" />
+            </div>}
+
+            {isSignedIn && <Link href={"/"} className='hidden md:block'>
                 <UserCircle2 className='h-8 w-8' />
-            </Link>
+            </Link>}
             {/* Menubar for resonsivenss */}
-            <div className="block md:hidden">
-            <Dropmenu icon={<MenuIcon />} dropdownMenu={navcomponents}/>
-            </div>
+            {isSignedIn && <div className="block md:hidden">
+                <Dropmenu icon={<MenuIcon />} dropdownMenu={navcomponents} />
+            </div>}
+
+            {!isSignedIn && <div className="block md:hidden items-center gap-4">
+                <SignInButton className="bg-[#cf0] rounded-md px-4 py-1.5 text-[#111]" />
+            </div>}
             {/* Menubar for resonsivenss */}
         </nav>
     )
