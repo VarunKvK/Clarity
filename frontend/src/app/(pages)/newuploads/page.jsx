@@ -8,10 +8,18 @@ import { useEffect, useState } from 'react'
 const NewUploads = () => {
     const [fileUploaded, uploaded] = useState(false);//For buttons visiblity
     const [files, setFiles] = useState();
+    const [task,setTask]=useState();
     const handleRedo = () => {
         uploaded(false);  // Reset the file upload state
-        setFiles(null);          // Clear the uploaded files if needed
+        setFiles(null);  // Clear the uploaded files if needed
     };
+
+    const handleTask = (selectedTask) => {
+        setTask(selectedTask);
+        
+    };
+
+    console.log(task)
     return (
         <div className="xl:max-w-6xl lg:max-w-4xl md:max-w-2xl max-w-2xl flex items-center w-full flex-col px-4 h-[90vh] relative">
             <div className='h-full flex items-center relative z-100'>
@@ -20,18 +28,18 @@ const NewUploads = () => {
                         <h1 className="header xl:text-[2.5rem] lg:text-[2rem] md:text-[1.5rem] sm:text-[1.2rem] text-[1.2rem] text-center xl:leading-[4rem] lg:leading-[3.5rem] md:leading-[3rem] sm:leading-[2.5rem] leading-[2rem]">
                             Drop your <span className='text-[#cf0] font-bold'>PDFs</span> here and watch magic happen!
                         </h1>
-                        <FileUploader uploaded={uploaded} setFiles={setFiles} />
+                        <FileUploader uploaded={uploaded} setFiles={setFiles}/>
                     </div>
                     {fileUploaded && (
                         //Set of buttons for the particular functionality 
                         <div className="flex justify-between">
-                            <Button className="px-4 py-2 rounded-md border border-neutral-300 bg-neutral-100 text-neutral-500 text-sm hover:-translate-y-1 transform transition duration-200 hover:shadow-md hover:bg-[#cf0]">
+                            <Button onClick={()=>handleTask("summarize")} className="px-4 py-2 rounded-md border border-neutral-300 bg-neutral-100 text-neutral-500 text-sm hover:-translate-y-1 transform transition duration-200 hover:shadow-md hover:bg-[#cf0]">
                                 Summarize it
                             </Button>
-                            <Button className="px-4 py-2 rounded-md border border-neutral-300 bg-neutral-100 text-neutral-500 text-sm hover:-translate-y-1 transform transition duration-200 hover:shadow-md hover:bg-[#cf0]">
+                            <Button onClick={()=>handleTask("notes")} className="px-4 py-2 rounded-md border border-neutral-300 bg-neutral-100 text-neutral-500 text-sm hover:-translate-y-1 transform transition duration-200 hover:shadow-md hover:bg-[#cf0]">
                                 Turn it into notes
                             </Button>
-                            <Button className="px-4 py-2 rounded-md border border-neutral-300 bg-neutral-100 text-neutral-500 text-sm hover:-translate-y-1 transform transition duration-200 hover:shadow-md hover:bg-[#cf0]">
+                            <Button onClick={()=>handleTask("questions")} className="px-4 py-2 rounded-md border border-neutral-300 bg-neutral-100 text-neutral-500 text-sm hover:-translate-y-1 transform transition duration-200 hover:shadow-md hover:bg-[#cf0]">
                                 Make questions from it
                             </Button>
                         </div>

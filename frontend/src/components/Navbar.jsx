@@ -3,7 +3,7 @@ import { MenuIcon, UserCircle2 } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import Dropmenu from './mini_components/Dropmenu'
-import { SignInButton, useAuth } from '@clerk/nextjs'
+import { SignInButton, SignUpButton, useAuth } from '@clerk/nextjs'
 
 const Navbar = () => {
     const { isSignedIn } = useAuth();
@@ -26,6 +26,7 @@ const Navbar = () => {
 
             {!isSignedIn && <div className="items-center gap-4 hidden md:flex">
                 <SignInButton className="bg-[#cf0] rounded-md px-6 py-2 text-[#111]" />
+                <SignUpButton className="border border-[#cf0] rounded-md px-6 py-2 text-[#ffff]" />
             </div>}
 
             {isSignedIn && <Link href={"/"} className='hidden md:block'>

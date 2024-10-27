@@ -5,6 +5,7 @@ import { currentUser } from "@clerk/nextjs/server";
 export async function GET(req, res) {
   try {
     const clerkuser = await currentUser();
+
     if (!clerkuser) {
       return Response.json({ error: "Unauthorized" });
     }
@@ -12,7 +13,7 @@ export async function GET(req, res) {
 
     const {imageUrl, firstName, lastName } = clerkuser;
     const emailAddress = clerkuser.emailAddresses[0].emailAddress;
-    const username=firstName+" "+lastName;
+    const username = (firstName && lastName) ? `${firstName} ${lastName}` : "Clarity_User";
 
     let user = await User.findOne({ email:emailAddress });
     if (user) {

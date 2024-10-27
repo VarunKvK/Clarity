@@ -6,7 +6,7 @@ import { CheckCircle } from "lucide-react";
 import { SignInButton, useAuth } from "@clerk/nextjs";
 
 
-export function FileUploader({ uploaded, setFiles }) {
+export function FileUploader({uploaded, setFiles }) {
   const { toast } = useToast()
   const {isSignedIn}=useAuth();
 
@@ -25,7 +25,6 @@ export function FileUploader({ uploaded, setFiles }) {
 
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
           uploaded(true);
           toast(
             {

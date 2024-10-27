@@ -1,5 +1,5 @@
 import PyPDF2
-from fastapi import FastAPI,UploadFile,File
+from fastapi import FastAPI,UploadFile,File,Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from io import BytesIO
@@ -17,16 +17,17 @@ app.add_middleware(
 )
 
 @app.post('/newuploads/')
-async def upload_file(file:UploadFile=File(...)):
+async def upload_file(file:UploadFile=File(...), task: str = Form(...)):
     content= await file.read()
     
+    print(task)
+
     with BytesIO(content) as pdf_file:
         content=PyPDF2.PdfReader(pdf_file)
         text=""
         for page_num in range(len(content.pages)):
             page= content.pages[page_num]
             text+= page.extract_text()
-        
-        print(text)
     # At this point, the PDF content is extracted as text
     return text
+
