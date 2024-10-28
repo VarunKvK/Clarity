@@ -5,12 +5,13 @@ import { useToast } from "@/hooks/use-toast";
 import { CheckCircle } from "lucide-react";
 import { SignInButton, useAuth } from "@clerk/nextjs";
 
-export function FileUploader({ setFiles, uploaded }) {
+export function FileUploader({ files, setFiles, setuploaded }) {
   const { toast } = useToast();
   const { isSignedIn } = useAuth();
 
   const handleFileUpload = async (f) => {
     setFiles(f)
+    setuploaded(true);
     try {
       if (f[0].type === "application/pdf") {
         const formData = new FormData();
@@ -22,8 +23,6 @@ export function FileUploader({ setFiles, uploaded }) {
         });
 
         if (response.ok) {
-          console.log(await response.json())
-          uploaded(true);
           toast({
             icon: <CheckCircle size={24} />,
             title: "File uploaded successfully!",
@@ -54,7 +53,9 @@ export function FileUploader({ setFiles, uploaded }) {
   return (
     <div
       className="w-full max-w-4xl mx-auto min-h-96 border border-dashed bg-black border-[#cf0] rounded-lg flex justify-center items-center">
-      {isSignedIn ? (<FileUpload onChange={handleFileUpload} />) : (
+      {isSignedIn ? (
+        <FileUpload onChange={handleFileUpload} files={files} setFiles={setFiles} />
+      ) : (
         <div className="flex flex-col gap-2">
           <div className="flex flex-col items-center justify-center">
             <h2 className="text-lg">Haven't signed in yet?</h2>

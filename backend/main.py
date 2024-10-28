@@ -25,18 +25,20 @@ genai.configure(api_key=os.getenv("GEMINI_KEY"))
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 def summarize_content(extracted_text):
-    # Define the prompt with an f-string to insert the extracted text dynamically
     prompt = f'''
-        From the text provided from the PDF, summarize the content to give students a clear understanding of the key concepts. 
-        Make the summary structured, including examples where relevant for better understanding.
-        
-        Text from the PDF:
+        You are an educational assistant helping students understand complex material. Summarize the following content from a PDF in a way that's easy to understand.
+        Include key points and organize them logically. Use bullet points for clarity, and add examples where necessary to clarify challenging concepts.
+
+        Content:
         {extracted_text}
-        
-        Provide the response in a structured format.
+
+        Please format the response as follows:
+        - The topic heading needs to be bold and also it needs to be the header.
+        - The paragraphs should be of medium font style and it should be a paragraph.
+        - Bullet points for key points, definitions, and examples, with a double newline between each bullet for spacing.
+        - The summary should be concise and easy to understand.
     '''
     
-    # Generate content with the AI model, assuming 'model' is initialized properly
     try:
         response = model.generate_content(prompt)
         return response.text
@@ -44,40 +46,41 @@ def summarize_content(extracted_text):
         print(f"Error in generating summary: {e}")
         return "An error occurred during summarization."
 
-
 def create_notes(extracted_text):
-     # Define the prompt with an f-string to insert the extracted text dynamically
     prompt = f'''
-        From the text provided from the PDF, generate notes from the content to give students a clear guidance on what to study. 
-        Create the note in a structured format, including examples where relevant for better understanding.
+        You are an educational assistant tasked with generating study notes from the following PDF content.
+        Create concise, structured notes highlighting the most important points, definitions, and examples for each concept.
         
-        Text from the PDF:
+        Content:
         {extracted_text}
-        
-        Provide the response in a structured format.
+
+        Please format the notes with:
+        - **Headers** in bold for each main concept, followed by a double newline for separation.
+        - **Bullet points** for key ideas, definitions, and details, with a **double newline between each bullet** for spacing.
+        - Examples under each concept as separate bullets with double newlines above and below examples to keep them visually distinct.
     '''
     
-    # Generate content with the AI model, assuming 'model' is initialized properly
     try:
         response = model.generate_content(prompt)
         return response.text
     except Exception as e:
         print(f"Error in generating notes: {e}")
         return "An error occurred during creating notes."
-    
+
 def generate_questions(extracted_text):
-     # Define the prompt with an f-string to insert the extracted text dynamically
     prompt = f'''
-        From the text provided from the PDF, generate 10 question from the content to give students an idea on what all could be asked from the pdf. 
-        Create the questions with answers so the students could make sure they have the right answer.
-        
-        Text from the PDF:
+        You are an educational assistant tasked with creating study questions from the following PDF content.
+        Generate 10 questions based on the key ideas and concepts, and provide concise answers.
+
+        Content:
         {extracted_text}
-        
-        Provide the response in a structured format.
+
+        Please format the question-answer pairs with:
+        - **Each question starting with "Q:"** and answer with "A:" for clarity.
+        - **Double newlines** between each question and answer pair for spacing.
+        - Ensure questions focus on major concepts to help students with self-testing effectively.
     '''
     
-    # Generate content with the AI model, assuming 'model' is initialized properly
     try:
         response = model.generate_content(prompt)
         return response.text
@@ -110,7 +113,7 @@ async def get_task(task: str = Form(...)):
     try:
         if task=="summarize":
             response=summarize_content(extracted_text)
-            return JSONResponse(content={"Summarized Content":response}, status_code=200)
+            return JSONResponse(content={"SummarizedContent":response}, status_code=200)
         elif task=="notes":
             response=create_notes(extracted_text)
             return JSONResponse(content={"Notes":response}, status_code=200)
