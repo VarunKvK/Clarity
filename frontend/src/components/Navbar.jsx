@@ -11,6 +11,7 @@ const Navbar = () => {
         { name: "Why Clarity?", href: "#why" },
         { name: "Add Files", href: "/newuploads" },
         { name: "My Space", href: "/profile" },
+        { name: "Terms&Condition", href: "/terms&conditions" },
     ]
     return (
         <nav className='xl:max-w-6xl lg:max-w-4xl md:max-w-2xl max-w-2xl header font-medium flex items-center justify-between md:py-8 py-6 md:px-4 px-6  w-full relative z-20'>
