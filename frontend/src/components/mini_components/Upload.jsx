@@ -10,7 +10,7 @@ export function FileUploader({ files, setFiles, setuploaded }) {
   const { isSignedIn } = useAuth();
 
   const handleFileUpload = async (f) => {
-    setFiles(f)
+    setFiles(f);
     setuploaded(true);
     try {
       if (f[0].type === "application/pdf") {
@@ -51,15 +51,14 @@ export function FileUploader({ files, setFiles, setuploaded }) {
   };
 
   return (
-    <div
-      className="w-full max-w-4xl mx-auto min-h-96 border border-dashed bg-black border-[#cf0] rounded-lg flex justify-center items-center">
+    <div className="w-full max-w-4xl mx-auto min-h-96 border border-dashed bg-black border-[#cf0] rounded-lg flex justify-center items-center">
       {isSignedIn ? (
         <FileUpload onChange={handleFileUpload} files={files} setFiles={setFiles} />
       ) : (
         <div className="flex flex-col gap-2">
           <div className="flex flex-col items-center justify-center">
-            <h2 className="text-lg">Haven't signed in yet?</h2>
-            <p className="opacity-20">Let's complete that step first!</p>
+            <h2 className="text-lg">Haven&apos;t signed in yet?</h2>
+            <p className="opacity-20">Let&apos;s complete that step first!</p>
           </div>
           <SignInButton className="bg-[#cf0] rounded-md px-4 py-1.5 text-[#111]" />
         </div>

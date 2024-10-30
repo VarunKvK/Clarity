@@ -4,6 +4,7 @@ import GeneratedContent from '@/components/mini_components/GeneratedContent';
 import { FileUploader } from '@/components/mini_components/Upload';
 import { Button } from '@/components/ui/button';
 import { FileQuestion, NotepadText, PenTool, RotateCcw } from 'lucide-react';
+import Link from 'next/link';
 import { useState } from 'react';
 
 const NewUploads = () => {
@@ -11,7 +12,7 @@ const NewUploads = () => {
     const [files, setFiles] = useState([]);
     const [aiContent, setAi] = useState();
     const [isLoading, setIsLoading] = useState(false); // Loading state
-    const [task,setTask]=useState();
+    const [task, setTask] = useState();
 
     const handleRedo = () => {
         setuploaded(false);
@@ -30,9 +31,9 @@ const NewUploads = () => {
             method: "POST",
             body: formData,
         });
-    
+
         const data = await response.json();
-        
+
         if (response.ok) {
             // Select the correct key based on the selectedTask
             let content = "";
@@ -43,13 +44,13 @@ const NewUploads = () => {
             } else if (selectedTask === "questions") {
                 content = data.Questions;
             }
-    
+
             // Set aiContent with the string content
             setAi(content);
         } else {
             console.error("Task submission failed");
         }
-    
+
         setIsLoading(false); // Stop loader
     };
 
@@ -89,7 +90,7 @@ const NewUploads = () => {
                                 <RotateCcw />
                                 Redo
                             </Button>
-                        </div>  
+                        </div>
                     )}
 
                     {files?.length > 0 && files[0]?.type !== "application/pdf" && fileUploaded && (
@@ -103,7 +104,7 @@ const NewUploads = () => {
 
                     {/* Display AI content if available */}
                     {aiContent && (
-                        <GeneratedContent aiContent={aiContent} task={task}/>
+                        <GeneratedContent aiContent={aiContent} task={task} files={files}/>
                     )}
                 </div>
             </div>

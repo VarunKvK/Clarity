@@ -1,16 +1,45 @@
 'use client'
 import { MenuIcon, UserCircle2 } from 'lucide-react'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Dropmenu from './mini_components/Dropmenu'
 import { SignInButton, SignUpButton, useAuth } from '@clerk/nextjs'
 
 const Navbar = () => {
     const { isSignedIn } = useAuth();
+    const [userId,setUserId]=useState();
+  
+    useEffect(() => {
+      if (isSignedIn) {
+        const fetchData = async () => {
+          try {
+            const response = await fetch("/api/user", {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            });
+  
+            if (!response.ok) {
+              throw new Error("Failed to fetch user data.");
+            }
+            const data=await response.json();
+            setUserId(data.user._id)
+
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+          }
+        };
+  
+        fetchData();
+      }
+    }, [isSignedIn]);
+  
     const navcomponents = [
         { name: "Why Clarity?", href: "#why" },
         { name: "Add Files", href: "/newuploads" },
-        { name: "My Space", href: "/profile" },
+        { name: "My Space", href: `/myspace/${userId}` },
         { name: "Terms&Condition", href: "/terms&conditions" },
     ]
     return (
@@ -30,7 +59,7 @@ const Navbar = () => {
                 <SignUpButton className="border border-[#cf0] rounded-md px-6 py-2 text-[#ffff]" />
             </div>}
 
-            {isSignedIn && <Link href={"/"} className='hidden md:block'>
+            {isSignedIn && <Link href={`/myspace/${userId}`} className='hidden md:block'>
                 <UserCircle2 className='h-8 w-8' />
             </Link>}
             {/* Menubar for resonsivenss */}

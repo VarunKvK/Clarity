@@ -58,6 +58,7 @@ def create_notes(extracted_text):
         - **Headers** in bold for each main concept, followed by a double newline for separation.
         - **Bullet points** for key ideas, definitions, and details, with a **double newline between each bullet** for spacing.
         - Examples under each concept as separate bullets with double newlines above and below examples to keep them visually distinct.
+        
     '''
     
     try:
@@ -70,16 +71,18 @@ def create_notes(extracted_text):
 def generate_questions(extracted_text):
     prompt = f'''
         You are an educational assistant tasked with creating study questions from the following PDF content.
-        Generate 10 questions based on the key ideas and concepts, and provide concise answers.
+        Generate up to 10 questions based on the key ideas and concepts, and provide concise answers.
 
         Content:
         {extracted_text}
 
-        Please format the question-answer pairs with:
-        - No need to put these '**' symbols in the response.
-        - **Each question starting with "Q:"** and answer with "A:" for clarity.
-        - **Double newlines** between each question and answer pair for spacing.
-        - Ensure questions focus on major concepts to help students with self-testing effectively.
+        Please follow these instructions:
+        - Limit the entire response to under 2000 characters.
+        - **Start each question with "Q:"** and each answer with "A:" for clarity.
+        - Separate each question-answer pair with **double newlines** for clear formatting.
+        - Focus questions on major concepts to assist with effective self-testing.
+        
+        Keep answers concise to ensure the response remains within the character limit.
     '''
     
     try:

@@ -41,6 +41,21 @@ export default function Home() {
 
       fetchData();
     }
+
+    // const fetchNotion=async()=>{
+    //   const response=await fetch("/api/notion",
+    //     {
+    //       method:"GET",
+    //       headers:{
+    //         "Content-Type":"application/json",
+    //         Accept:"application/json",
+    //       },
+    //     }
+    //   )
+    //   console.log(await response.json())
+    // }
+
+    // fetchNotion()
   }, [isSignedIn, toast]);
 
   return (
