@@ -76,6 +76,7 @@ def generate_questions(extracted_text):
         {extracted_text}
 
         Please format the question-answer pairs with:
+        - No need to put these '**' symbols in the response.
         - **Each question starting with "Q:"** and answer with "A:" for clarity.
         - **Double newlines** between each question and answer pair for spacing.
         - Ensure questions focus on major concepts to help students with self-testing effectively.

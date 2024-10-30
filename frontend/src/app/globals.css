@@ -46,6 +46,39 @@ body {
   margin-bottom: 2rem;
 }
 
+.markdown-content-notes h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #cf0;
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.markdown-content-notes h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: .5rem;
+}
+
+.markdown-content-notes p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #dbdbdb;
+}
+
+.markdown-content-notes strong {
+  font-weight: bold;
+}
+
+.markdown-content-notes pre{
+  color: #f6f6f6;
+  background-color: #1e1e1e;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

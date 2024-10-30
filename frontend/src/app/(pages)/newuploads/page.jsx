@@ -11,6 +11,7 @@ const NewUploads = () => {
     const [files, setFiles] = useState([]);
     const [aiContent, setAi] = useState();
     const [isLoading, setIsLoading] = useState(false); // Loading state
+    const [task,setTask]=useState();
 
     const handleRedo = () => {
         setuploaded(false);
@@ -21,9 +22,10 @@ const NewUploads = () => {
 
     const handleTask = async (selectedTask) => {
         setIsLoading(true); // Start loader
+        setTask(selectedTask)
         const formData = new FormData();
         formData.append('task', selectedTask);
-    
+        console.log(formData)
         const response = await fetch("http://127.0.0.1:8000/newtask/", {
             method: "POST",
             body: formData,
@@ -101,7 +103,7 @@ const NewUploads = () => {
 
                     {/* Display AI content if available */}
                     {aiContent && (
-                        <GeneratedContent aiContent={aiContent}/>
+                        <GeneratedContent aiContent={aiContent} task={task}/>
                     )}
                 </div>
             </div>
