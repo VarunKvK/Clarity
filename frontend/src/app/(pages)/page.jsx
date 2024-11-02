@@ -8,9 +8,10 @@ import WhyPage from "@/components/WhyPage";
 import { useAuth } from "@clerk/nextjs";
 import { useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+import Loading from "@/components/mini_components/Loader";
 
 export default function Home() {
-  const { isSignedIn } = useAuth();
+  const { isSignedIn,isLoaded } = useAuth();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -57,6 +58,10 @@ export default function Home() {
 
     // fetchNotion()
   }, [isSignedIn, toast]);
+
+  if (!isLoaded || !isSignedIn) {
+    return <Loading />;
+}
 
   return (
     <div className="flex flex-col items-center w-full h-auto">

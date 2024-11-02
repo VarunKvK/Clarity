@@ -3,6 +3,7 @@ import { User } from "@/models/User";
 import { currentUser } from "@clerk/nextjs/server";
 
 export async function GET(req, res) {
+
   try {
     const clerkuser = await currentUser();
 

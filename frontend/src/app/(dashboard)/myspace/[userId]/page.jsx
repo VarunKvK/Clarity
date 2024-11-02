@@ -5,10 +5,9 @@ import React from 'react'
 
 const Dashboard = () => {
     const {userId}=useParams()
-    console.group(userId)
   return (
     <div>
-        Hello
+      Hello
     </div>
   )
 }

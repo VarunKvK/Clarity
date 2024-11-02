@@ -1,5 +1,5 @@
 import Navbar from "@/components/Navbar";
-import "./globals.css";
+import "../globals.css";
 import { Toaster } from "@/components/ui/toaster"
 import { ClerkProvider } from "@clerk/nextjs";
 
