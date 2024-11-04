@@ -5,27 +5,28 @@ import { Client } from "@notionhq/client";
 const notion = new Client({ auth: process.env.NOTION_SECRET });
 
 export async function GET(req, res) {
-    const databaseId = process.env.NOTION_DATABASE_ID;
-    const data = await getDatabaseItems(databaseId);
-  
-    const pages = await Promise.all(data.map(async (item) => {
+  const databaseId = process.env.NOTION_DATABASE_ID;
+  const data = await getDatabaseItems(databaseId);
+
+  const pages = await Promise.all(
+    data.map(async (item) => {
       const pageId = item.id;
-      
+
       const pageProperties = await notion.pages.retrieve({ page_id: pageId });
-  
+
       const pageContent = await notion.blocks.children.list({
         block_id: pageId,
       });
-  
+
       return {
         properties: pageProperties,
         content: pageContent.results,
       };
-    }));
-  
-    return Response.json({ pages });
-  }
-  
+    })
+  );
+
+  return Response.json({ pages });
+}
 
 export async function POST(req, res) {
   const { task, aiContent, files } = await req.json();
@@ -34,20 +35,25 @@ export async function POST(req, res) {
     const page = await notion.pages.create({
       parent: { database_id: process.env.NOTION_DATABASE_ID },
       properties: {
-        "File_Name": {
-          "type": "title",
-          "title": [{ "type": "text", "text": { "content": files } }]
+        File_Name: {
+          type: "title",
+          title: [{ type: "text", text: { content: files } }],
         },
-        "Type": {
-          "type": "select",
-          "select": { "name": task }
+        Type: {
+          type: "select",
+          select: { name: task },
+        },
+        UploadDate: {
+          date: {
+            start: date,
+          },
         },
       },
     });
 
     const pageId = page.id;
 
-    const contentChunks = aiContent.match(/(.|[\r\n]){1,2000}/g);  
+    const contentChunks = aiContent.match(/(.|[\r\n]){1,2000}/g);
 
     for (const chunk of contentChunks) {
       await notion.blocks.children.append({

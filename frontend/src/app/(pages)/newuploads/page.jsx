@@ -24,9 +24,14 @@ const NewUploads = () => {
     const handleTask = async (selectedTask) => {
         setIsLoading(true); // Start loader
         setTask(selectedTask)
+        
         const formData = new FormData();
         formData.append('task', selectedTask);
+
+        const currentDate = new Date().toISOString();
+        formData.append('date', currentDate);
         console.log(formData)
+
         const response = await fetch("http://127.0.0.1:8000/newtask/", {
             method: "POST",
             body: formData,

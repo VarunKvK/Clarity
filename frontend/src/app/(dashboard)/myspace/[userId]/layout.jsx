@@ -26,11 +26,11 @@ export default async function RootLayout({ children }) {
 
   const { emailAddress: clerkUserEmail } = clerkUser.emailAddresses[0];
   const userData = await User.findOne({ email: clerkUserEmail });
-  if (!userData) {
-    console.log("User data not found in MongoDB");
-  } else {
-    console.log("User data found:", userData);
-  }
+  // if (!userData) {
+  //   console.log("User data not found in MongoDB");
+  // } else {
+  //   console.log("User data found:", userData);
+  // }
   return (
 
     <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY} dynamic>

@@ -17,6 +17,7 @@ const parseQuestions = (content) => {
 };
 
 const GeneratedContent = ({ aiContent, task, files }) => {
+    console.log(aiContent)
     const saveOnNotion = async () => {
         try {
             const response = await fetch('/api/notion', {
