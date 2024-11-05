@@ -3,6 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import "../../app/globals.css";
 import { Sparkles } from 'lucide-react';
 import { Button } from '../ui/button';
+import Link from 'next/link';
 
 // Utility to parse questions and answers
 const parseQuestions = (content) => {
