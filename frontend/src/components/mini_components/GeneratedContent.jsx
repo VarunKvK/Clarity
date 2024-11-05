@@ -14,13 +14,13 @@ const parseQuestions = (content) => {
 };
 
 const GeneratedContent = ({ aiContent, task, files, date }) => {
-    const formattedDate= new Date(date).toISOString().split("T")[0];
+    const formattedDate = new Date(date).toISOString().split("T")[0];
     const saveOnNotion = async () => {
         try {
             const response = await fetch('/api/notion', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ task, aiContent, files, formattedDate})
+                body: JSON.stringify({ task, aiContent, files, formattedDate })
             });
             const data = await response.json();
             console.log("New item added to Notion database:", data);
@@ -35,7 +35,9 @@ const GeneratedContent = ({ aiContent, task, files, date }) => {
                     <Sparkles />
                     <h1 className="font-semibold">Generated Content</h1>
                 </div>
-                <Link href={`${process.env.NEXT_PUBLIC_AUTHORIZATION_URL}`}>Save on Notion</Link>
+                <Link href={process.env.NEXT_PUBLIC_AUTHORIZATION_URL} passHref>
+                    <a className="bg-red-300">Save on Notion</a>
+                </Link>
                 <Button onClick={saveOnNotion}>Save in Notion</Button>
             </div>
 
