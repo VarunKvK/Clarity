@@ -14,15 +14,3 @@ export default async function getDatabaseItems(databaseId) {
   }
 }
 
-// export default async function addItemToDatabase(databaseId, properties) {
-//   try {
-//     const response = await notion.pages.create({
-//       parent: { database_id: databaseId },
-//       properties,
-//     });
-//     console.log("New item added to Notion database:", response); // console for testing
-//     return response;
-//   } catch (error) {
-//     console.error("Error adding item to Notion database:", error);
-//   }
-// }

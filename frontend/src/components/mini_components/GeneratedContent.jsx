@@ -3,10 +3,6 @@ import ReactMarkdown from 'react-markdown';
 import "../../app/globals.css";
 import { Sparkles } from 'lucide-react';
 import { Button } from '../ui/button';
-import { Client } from "@notionhq/client";
-
-// Initialize Notion client
-const notion = new Client({ auth: process.env.NOTION_SECRET });
 
 // Utility to parse questions and answers
 const parseQuestions = (content) => {
@@ -16,14 +12,14 @@ const parseQuestions = (content) => {
     });
 };
 
-const GeneratedContent = ({ aiContent, task, files }) => {
-    console.log(aiContent)
+const GeneratedContent = ({ aiContent, task, files, date }) => {
+    const formattedDate= new Date(date).toISOString().split("T")[0];
     const saveOnNotion = async () => {
         try {
             const response = await fetch('/api/notion', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ task, aiContent, files })
+                body: JSON.stringify({ task, aiContent, files, formattedDate})
             });
             const data = await response.json();
             console.log("New item added to Notion database:", data);

@@ -6,13 +6,15 @@ import Header from "@/components/Header";
 import HowItWorks from "@/components/HowItWorks";
 import WhyPage from "@/components/WhyPage";
 import { useAuth } from "@clerk/nextjs";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import Loading from "@/components/mini_components/Loader";
 
 export default function Home() {
   const { isSignedIn,isLoaded } = useAuth();
   const { toast } = useToast();
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     if (isSignedIn) {
@@ -37,29 +39,33 @@ export default function Home() {
             title: "Error in signing in",
             description: "An issue occurred while signing in. Please try again.",
           });
-        }
+        }finally {
+          setLoading(false);
+      }
       };
 
       fetchData();
+    }else if (isLoaded) {
+      setLoading(false); // Stop loading if user is not signed in
+  }
+
+    const fetchNotion=async()=>{
+      const response=await fetch("/api/notion",
+        {
+          method:"GET",
+          headers:{
+            "Content-Type":"application/json",
+            Accept:"application/json",
+          },
+        }
+      )
+      console.log(await response.json())
     }
 
-    // const fetchNotion=async()=>{
-    //   const response=await fetch("/api/notion",
-    //     {
-    //       method:"GET",
-    //       headers:{
-    //         "Content-Type":"application/json",
-    //         Accept:"application/json",
-    //       },
-    //     }
-    //   )
-    //   console.log(await response.json())
-    // }
-
-    // fetchNotion()
+    fetchNotion()
   }, [isSignedIn, toast]);
 
-  if (!isLoaded || !isSignedIn) {
+  if (!isLoaded || !isSignedIn || loading) {
     return <Loading />;
 }
 

@@ -17,7 +17,7 @@ export function FileUploader({ files, setFiles, setuploaded }) {
         const formData = new FormData();
         formData.append("file", f[0]);
 
-        const response = await fetch("http://127.0.0.1:8000/newuploads/", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/newuploads/`, {
           method: "POST",
           body: formData,
         });

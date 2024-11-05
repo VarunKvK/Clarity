@@ -13,7 +13,9 @@ const NewUploads = () => {
     const [aiContent, setAi] = useState();
     const [isLoading, setIsLoading] = useState(false); // Loading state
     const [task, setTask] = useState();
+    const currentDate = new Date().toISOString();
 
+    // console.log(aiContent)
     const handleRedo = () => {
         setuploaded(false);
         setFiles([]);
@@ -28,11 +30,8 @@ const NewUploads = () => {
         const formData = new FormData();
         formData.append('task', selectedTask);
 
-        const currentDate = new Date().toISOString();
-        formData.append('date', currentDate);
-        console.log(formData)
 
-        const response = await fetch("http://127.0.0.1:8000/newtask/", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/newtask/`, {
             method: "POST",
             body: formData,
         });
@@ -109,7 +108,7 @@ const NewUploads = () => {
 
                     {/* Display AI content if available */}
                     {aiContent && (
-                        <GeneratedContent aiContent={aiContent} task={task} files={files}/>
+                        <GeneratedContent aiContent={aiContent} task={task} files={files[0].name} date={currentDate}/>
                     )}
                 </div>
             </div>

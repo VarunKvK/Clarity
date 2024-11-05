@@ -33,6 +33,7 @@ def summarize_content(extracted_text):
         {extracted_text}
 
         Please format the response as follows:
+        - The format should be '##' for header , '**' for paragraph and '```' for code snippet
         - Based on the file that has been uploaded create a title to make it easy to access by the user.
         - The topic heading needs to be bold and also it needs to be the header.
         - The paragraphs should be of medium font style and it should be a paragraph.
@@ -56,6 +57,7 @@ def create_notes(extracted_text):
         {extracted_text}
 
         Please format the notes with:
+        - The format should be '##' for header , '**' for paragraph and '```' for code snippet
         - Based on the file that has been uploaded create a title to make it easy to access by the user.
         - **Headers** in bold for each main concept, followed by a double newline for separation.
         - **Bullet points** for key ideas, definitions, and details, with a **double newline between each bullet** for spacing.
@@ -79,6 +81,7 @@ def generate_questions(extracted_text):
         {extracted_text}
 
         Please follow these instructions:
+        - The format should be '##' for header , '**' for paragraph and '```' for code snippet
         - Based on the file that has been uploaded create a title to make it easy to access by the user.
         - Limit the entire response to under 2000 characters.
         - **Start each question with "Q:"** and each answer with "A:" for clarity.
