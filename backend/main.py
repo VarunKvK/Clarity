@@ -14,7 +14,7 @@ app=FastAPI()
 # CORS settings
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000","https://clarity-lake.vercel.app/"],  # Adjust based on where the frontend is hosted
+    allow_origins=["http://localhost:3000", "https://clarity-lake.vercel.app"],  # Adjust based on where the frontend is hosted
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
