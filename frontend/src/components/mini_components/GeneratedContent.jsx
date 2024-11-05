@@ -36,7 +36,8 @@ const GeneratedContent = ({ aiContent, task, files, date }) => {
                     <h1 className="font-semibold">Generated Content</h1>
                 </div>
                 <Link href={process.env.NEXT_PUBLIC_AUTHORIZATION_URL} passHref>
-                    <a className="bg-red-300">Save on Notion</a>
+                    {/* <a className="bg-red-300">Save on Notion</a> */}
+                    Save on Notion
                 </Link>
                 <Button onClick={saveOnNotion}>Save in Notion</Button>
             </div>
