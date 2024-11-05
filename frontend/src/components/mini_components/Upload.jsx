@@ -9,7 +9,6 @@ export function FileUploader({ files, setFiles, setuploaded }) {
   const { toast } = useToast();
   const { isSignedIn } = useAuth();
 
-  console.log(`${process.env.NEXT_PUBLIC_API_URL}`)
   const handleFileUpload = async (f) => {
     setFiles(f);
     setuploaded(true);
