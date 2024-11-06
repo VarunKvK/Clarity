@@ -5,7 +5,7 @@ import { FileUploader } from '@/components/mini_components/Upload';
 import { Button } from '@/components/ui/button';
 import { FileQuestion, NotepadText, PenTool, RotateCcw } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const NewUploads = () => {
     const [fileUploaded, setuploaded] = useState(false); // For button visibility
@@ -60,9 +60,9 @@ const NewUploads = () => {
 
 
     return (
-        <div className="xl:max-w-6xl lg:max-w-4xl md:max-w-2xl max-w-2xl flex items-center w-full flex-col px-4 h-auto relative">
+        <div className="xl:max-w-6xl lg:max-w-4xl md:max-w-2xl max-w-2xl flex justify-center items-center w-full flex-col px-4 h-auto relative">
             <div className="h-full flex items-center relative z-100">
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 justify-center items-center">
                     <div className="flex flex-col gap-1 md:gap-2 lg:gap-2.5 xl:gap-4">
                         <h1 className="header xl:text-[2.5rem] lg:text-[2rem] md:text-[1.5rem] sm:text-[1.2rem] text-[1.2rem] text-center xl:leading-[4rem] lg:leading-[3.5rem] md:leading-[3rem] sm:leading-[2.5rem] leading-[2rem]">
                             Drop your <span className="text-[#cf0] font-bold">PDFs</span> here and watch magic happen!
@@ -74,7 +74,7 @@ const NewUploads = () => {
                     {isLoading && <AiLoader />}
 
                     {!isLoading && fileUploaded && files[0]?.type === "application/pdf" && (
-                        <div className="flex md:flex-row flex-wrap gap-2 justify-between">
+                        <div className="flex md:flex-row flex-wrap gap-2 justify-center sm:justify-between">
                             <Button onClick={() => handleTask("summarize")} className="px-4 py-2 rounded-md border border-neutral-300 bg-neutral-100 text-neutral-500 text-sm hover:-translate-y-1 transform transition duration-200 hover:shadow-md hover:bg-[#cf0] flex items-center gap-1">
                                 <PenTool />
                                 Summarize it
@@ -108,7 +108,9 @@ const NewUploads = () => {
 
                     {/* Display AI content if available */}
                     {aiContent && (
-                        <GeneratedContent aiContent={aiContent} task={task} files={files[0].name} date={currentDate}/>
+                        <div className="xl:max-w-6xl lg:max-w-4xl md:max-w-2xl sm:max-w-xl max-w-md w-full flex items-center justify-center">
+                            <GeneratedContent aiContent={aiContent} task={task} files={files[0].name} date={currentDate}/>
+                        </div>
                     )}
                 </div>
             </div>

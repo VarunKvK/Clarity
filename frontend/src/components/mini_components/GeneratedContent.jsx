@@ -1,9 +1,21 @@
-import React from 'react';
+'use client'
+import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import "../../app/globals.css";
-import { Sparkles } from 'lucide-react';
+import { LoaderCircle, Save, Sparkles } from 'lucide-react';
 import { Button } from '../ui/button';
 import Link from 'next/link';
+import { useToast } from '@/hooks/use-toast';
+
+
+
+
+//Need to change the button if it is not yet notion Integrated
+//Need to change the button if it is not yet notion Integrated
+//Need to change the button if it is not yet notion Integrated
+//Need to change the button if it is not yet notion Integrated
+//Need to change the button if it is not yet notion Integrated
+
 
 // Utility to parse questions and answers
 const parseQuestions = (content) => {
@@ -14,8 +26,11 @@ const parseQuestions = (content) => {
 };
 
 const GeneratedContent = ({ aiContent, task, files, date }) => {
+    const [loading, setLoading] = useState(false);
+    const {toast}=useToast();
     const formattedDate = new Date(date).toISOString().split("T")[0];
     const saveOnNotion = async () => {
+        setLoading(true);
         try {
             const response = await fetch('/api/notion', {
                 method: 'POST',
@@ -26,25 +41,42 @@ const GeneratedContent = ({ aiContent, task, files, date }) => {
             console.log("New item added to Notion database:", data);
         } catch (error) {
             console.error("Error saving item to Notion:", error);
+            toast({
+                variant: "destructive",
+                title: "There was an error saving",
+                description: "Your content has not been saved. Please try again!",
+            });
+        } finally {
+            setLoading(false);
+            toast({
+                title: "Content saved successfully",
+                description: "Your content has been saved on Notion.",
+            });
         }
     };
+
     return (
-        <div className="mt-4 p-8 border text-[#ffff] bg-[#111] rounded-[2rem] mb-8">
+        <div className="xl:max-w-6xl lg:max-w-4xl md:max-w-2xl max-w-2xl w-full mt-4 p-8 border text-[#ffff] bg-[#111] rounded-[2rem] mb-8">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1 text-sm opacity-50 mb-6">
                     <Sparkles />
                     <h1 className="font-semibold">Generated Content</h1>
                 </div>
-                <Link href={process.env.NEXT_PUBLIC_AUTHORIZATION_URL} passHref>
-                    {/* <a className="bg-red-300">Save on Notion</a> */}
-                    Save on Notion
-                </Link>
-                <Button onClick={saveOnNotion}>Save in Notion</Button>
+                <Button onClick={saveOnNotion} disabled={loading} className="flex items-center gap-2 px-6 py-2 bg-white text-[#111] rounded-lg font-medium transform hover:-translate-y-1 hover:bg-[#cf0] transition duration-400">
+                    {loading ? (
+                        <LoaderCircle className="animate-spin text-gray-500" size={16} />
+                    ) : (
+                        <span className="flex items-center gap-1">
+                            <Save/>
+                            Save in Notion
+                            </span>
+                    )}
+                </Button>
             </div>
 
             {/* Conditional Rendering based on Task */}
             {task === "generate questions" ? (
-                <div className="question-container space-y-4">
+                <div className="space-y-4">
                     {parseQuestions(aiContent).map(({ question, answer, id }) => (
                         <div key={id} className="bg-[#222] p-4 rounded-md shadow-md">
                             <p className="font-semibold text-[#ffcc00] mb-2">{question}</p>

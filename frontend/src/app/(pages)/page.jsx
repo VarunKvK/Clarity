@@ -49,20 +49,6 @@ export default function Home() {
       setLoading(false); // Stop loading if user is not signed in
   }
 
-    const fetchNotion=async()=>{
-      const response=await fetch("/api/notion",
-        {
-          method:"GET",
-          headers:{
-            "Content-Type":"application/json",
-            Accept:"application/json",
-          },
-        }
-      )
-      console.log(await response.json())
-    }
-
-    fetchNotion()
   }, [isSignedIn, toast]);
 
   if (!isLoaded || !isSignedIn || loading) {

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import React from 'react'
 import FileInfo from './mini_components/FileInfo'
 
-const ResourcesList = () => {
+const ResourcesList = ({data}) => {
     return (
         <div className=" flex flex-col w-full p-4 gap-4">
             <div className="flex items-center justify-between">
@@ -18,9 +18,9 @@ const ResourcesList = () => {
                 </Link>
             </div>
             <div className="grid grid-cols-3 gap-4">
-                <FileInfo />
-                <FileInfo />
-                <FileInfo />
+                {data?.map((notion) => (
+                    <FileInfo key={notion.properties.id} title={notion?.properties.properties.FileTitle}/>
+                ))}
             </div>
         </div>
     )

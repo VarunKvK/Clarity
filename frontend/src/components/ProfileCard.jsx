@@ -1,5 +1,7 @@
 import React from 'react'
 import { Profile } from './mini_components/Avatar'
+import { Badge } from "@/components/ui/badge"
+
 
 const ProfileCard = ({ userData }) => {
   // console.log(userData)
@@ -16,7 +18,12 @@ const ProfileCard = ({ userData }) => {
         profileInitial={userData?.name ? getInitials(userData.name) : ''}
       />
       <div className="flex flex-col leading-tight">
+        <div className="flex items-start gap-1">
         <h1 className="text-[2rem]">{userData?.name}</h1>
+        {userData && userData?.notionIntegrationStatus &&
+        <Badge variant="outline" className="border border-[#cf0] rounded-full text-[#cf0]">Notion Integrated</Badge>
+        }
+        </div>
         <p className="text-[.7rem] opacity-50">User Id-{userData?._id}</p>
       </div>
     </div>

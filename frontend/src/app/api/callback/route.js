@@ -1,3 +1,6 @@
+import connectToDatabase from '@/lib/mongodb';
+import { User } from '@/models/User';
+import { currentUser } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 
 export async function GET(req) {
@@ -33,8 +36,27 @@ export async function GET(req) {
 
         const { access_token } = data;
 
-        // Here, you may save the access token in your database or session for later use
-        return NextResponse.json({ message: "Authorization successful", token: access_token });
+        const clerkuser = await currentUser();
+        if (!clerkuser) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        await connectToDatabase();
+
+        const emailAddress = clerkuser.emailAddresses[0].emailAddress;
+
+        // Upsert user information with Notion token
+        const user = await User.findOneAndUpdate(
+            { email: emailAddress },
+            {
+                notionIntegrationStatus: true,
+                notionAccessToken: access_token,
+            },
+            { new: true, upsert: false}
+        );
+
+        // return NextResponse.redirect(`${process.env.NEXT_PUBLIC_DEPLOYED_URL}/myspace/${user._id}`);
+        return NextResponse.redirect(`http://localhost:3000/myspace/${user._id}`);
     } catch (error) {
         console.error("Token exchange error:", error);
         return NextResponse.json({ error: "Failed to complete authorization" }, { status: 500 });
