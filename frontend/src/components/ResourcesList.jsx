@@ -19,7 +19,7 @@ const ResourcesList = ({data}) => {
             </div>
             <div className="grid grid-cols-3 gap-4">
                 {data?.map((notion) => (
-                    <FileInfo key={notion.properties.id} title={notion?.properties.properties.FileTitle}/>
+                    <FileInfo key={notion.properties.id} title={notion?.properties.properties.FileTitle?.rich_text[0]}/>
                 ))}
             </div>
         </div>

@@ -20,7 +20,7 @@ const FilesList = ({ data }) => {
             </div>
             <div className="grid grid-cols-3 gap-4">
                 {data?.map((notion) => (
-                    <FileInfo key={notion.properties.id} title={notion?.properties.properties.FileName}/>
+                    <FileInfo key={notion.properties.id} title={notion?.properties.properties.FileName?.title[0]}/>
                 ))}
             </div>
         </div>
