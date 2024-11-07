@@ -25,22 +25,6 @@ genai.configure(api_key=os.getenv("GEMINI_KEY"))
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 def summarize_content(extracted_text):
-    # prompt = f'''
-    #     You are an educational assistant helping students understand complex material. Summarize the following content from a PDF in a way that's easy to understand.
-    #     Include key points and organize them logically. Use bullet points for clarity, and add examples where necessary to clarify challenging concepts.
-
-    #     Content:
-    #     {extracted_text}
-
-    #     Please format the response as follows:
-    #     - The format should be '##' for header , '**' for paragraph and '```' for code snippet
-    #     - Based on the file that has been uploaded create a title to make it easy to access by the user.
-    #     - The topic heading needs to be bold and also it needs to be the header.
-    #     - The paragraphs should be of medium font style and it should be a paragraph.
-    #     - Bullet points for key points, definitions, and examples, with a double newline between each bullet for spacing.
-    #     - The summary should be concise and easy to understand.
-    # '''
-    
     prompt = f'''
         Summarize the key concepts and topics from the provided PDF in a clear, structured way that is easy for a beginner to understand. Follow these steps:
 
@@ -87,19 +71,55 @@ def summarize_content(extracted_text):
 
 def create_notes(extracted_text):
     prompt = f'''
-        You are an educational assistant tasked with generating study notes from the following PDF content.
-        Create concise, structured notes highlighting the most important points, definitions, and examples for each concept.
+
+        Provide a set of structured notes from the provided PDF, following these steps:
+
+        1. Pre-Reading and Preparation:
+        - Skim through the PDF to get an overview of the content and main topics.
+        - Identify the key sections, headings, and any important visuals or diagrams.
+        - Consider what you already know about the subject and what you hope to learn.
+
+        2. Active Reading and Highlighting:
+        - Read through the PDF actively, pausing to reflect on the information.
+        - Use highlighters or digital annotation tools to mark important concepts, definitions, formulas, or examples.
+        - Focus on understanding the main ideas, not just memorizing facts.
+
+        3. Structured Note-Taking:
+        - Organize your notes in a structured format, such as an outline, mind map, or Cornell method.
+        - Use clear headings, subheadings, and bullet points to create a logical flow.
+        - Leave space for additional notes and connections between ideas.
+
+        4. Summarization and Key Takeaways:
+        - After each section or topic, summarize the main points in your own words.
+        - Identify the most critical information, formulas, or concepts that you need to remember.
+        - Condense the summary into concise, easily digestible bullet points or short paragraphs.
+
+        5. Visualization and Diagrams:
+        - Create visual aids, such as diagrams, flowcharts, or tables, to represent complex concepts.
+        - Use colors, shapes, and spatial relationships to help you better understand and remember the information.
+        - Explain the visual elements in your notes to solidify your understanding.
+
+        6. Connections and Relationships:
+        - Identify connections between different topics or concepts in the PDF.
+        - Draw links and cross-references in your notes to create a web of understanding.
+        - Explore how the information in the PDF relates to your prior knowledge or other resources.
+
+        7. Review and Reflection:
+        - Regularly review your notes to ensure you understand the content.
+        - Identify any gaps or areas that need more clarification.
+        - Reflect on how the information in the PDF fits into the broader context of the subject.
+
+        8. Practice and Application:
+        - Engage in practice problems, exercises, or discussions related to the concepts in the PDF.
+        - Apply the knowledge you've gained to new situations or scenarios.
+        - Continuously refine and improve your note-taking process based on your performance and feedback.
+
+        Output Format:
+        Provide the structured notes in a well-organized, easy-to-read format. Use clear section headings, concise paragraphs, and formatting (e.g., bullet points, diagrams) to enhance the readability and effectiveness of the notes. The output should comprehensively cover the key concepts and information from the PDF, while also showcasing your understanding and ability to apply the knowledge.
         
+        The content is provided below
         Content:
         {extracted_text}
-
-        Please format the notes with:
-        - The format should be '##' for header , '**' for paragraph and '```' for code snippet
-        - Based on the file that has been uploaded create a title to make it easy to access by the user.
-        - **Headers** in bold for each main concept, followed by a double newline for separation.
-        - **Bullet points** for key ideas, definitions, and details, with a **double newline between each bullet** for spacing.
-        - Examples under each concept as separate bullets with double newlines above and below examples to keep them visually distinct.
-        
     '''
     
     try:
@@ -111,21 +131,49 @@ def create_notes(extracted_text):
 
 def generate_questions(extracted_text):
     prompt = f'''
-        You are an educational assistant tasked with creating study questions from the following PDF content.
-        Generate up to 10 questions based on the key ideas and concepts, and provide concise answers.
+        Generate a comprehensive set of questions and answers based on the provided PDF, following these steps:
+
+        1. Understand the Content:
+        - Carefully read through the PDF and ensure you have a solid understanding of the key concepts, definitions, and theories presented.
+        - Identify the main topics, subtopics, and any important examples or case studies.
+
+        2. Identify Learning Objectives:
+        - Determine the learning objectives or goals that the PDF aims to achieve.
+        - Consider what the reader should be able to know, understand, or do after studying the material.
+
+        3. Generate Different Question Types:
+        - Create a variety of question types to cover different levels of understanding, such as:
+        - Recall questions (e.g., definitions, facts)
+        - Comprehension questions (e.g., explanations, interpretations)
+        - Application questions (e.g., problem-solving, case studies)
+        - Analysis questions (e.g., comparisons, evaluations)
+        - Synthesis questions (e.g., creating new ideas, solutions)
+
+        4. Target Key Concepts and Topics:
+        - Ensure that your questions cover the essential concepts, theories, and topics presented in the PDF.
+        - Prioritize questions that address the most important or foundational information.
+
+        5. Vary Question Formats:
+        - Use different question formats to assess understanding, such as:
+        - Multiple-choice
+        - True/False
+        - Fill-in-the-blank
+        - Short answer
+        - Essay
+
+        6. Provide Detailed Answers:
+        - For each question, prepare a comprehensive answer that explains the correct response in detail.
+        - Include relevant references to the PDF, formulas, examples, or additional explanations.
+
+        7. Organize the Questions:
+        - Group the questions by topic or difficulty level to create a structured question bank.
+        - Consider numbering or labeling the questions for easy reference.
+
+        Output Format:
+        Provide the set of questions and answers in a well-organized, easy-to-read format. Use clear section headings, concise question formulations, and detailed answer explanations. The output should comprehensively cover the key concepts and information from the PDF, demonstrating your understanding of the subject matter.
 
         Content:
         {extracted_text}
-
-        Please follow these instructions:
-        - The format should be '##' for header , '**' for paragraph and '```' for code snippet
-        - Based on the file that has been uploaded create a title to make it easy to access by the user.
-        - Limit the entire response to under 2000 characters.
-        - **Start each question with "Q:"** and each answer with "A:" for clarity.
-        - Separate each question-answer pair with **double newlines** for clear formatting.
-        - Focus questions on major concepts to assist with effective self-testing.
-        
-        Keep answers concise to ensure the response remains within the character limit.
     '''
     
     try:
