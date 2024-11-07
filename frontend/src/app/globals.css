@@ -33,8 +33,41 @@ body {
 .markdown-content ul {
   display: grid;
   gap: 1rem;
+  margin-bottom:2rem;
   /* Adjust gap between list items on larger screens */
-  @apply md:gap-2 lg:gap-4;
+  @apply grid md:gap-[1.5rem] lg:gap-[2rem] xl:gap-[2rem];
+}
+
+.markdown-content-notes ol
+.markdown-content ol {
+  @apply grid grid-rows-4 gap-1
+}
+
+.markdown-content-notes li p,
+.markdown-content li p{
+  @apply text-lg my-[1rem]
+}
+
+.markdown-content-notes li strong,
+.markdown-content li strong{
+  @apply text-lg my-[1rem]
+}
+
+.markdown-content-notes li ul,
+.markdown-content li ul{
+  @apply text-base my-[1rem]
+}
+
+
+.markdown-content h3,
+.markdown-content-notes h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #cf0;
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+  /* Larger font size on larger screens */
+  @apply md:text-lg lg:text-xl xl:text-2xl;
 }
 
 .markdown-content h2,

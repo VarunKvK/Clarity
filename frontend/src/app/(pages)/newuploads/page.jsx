@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { AiLoader } from '@/components/mini_components/AI_Genration_Loader';
 import GeneratedContent from '@/components/mini_components/GeneratedContent';
 import { FileUploader } from '@/components/mini_components/Upload';
@@ -9,27 +9,27 @@ import { useEffect, useState } from 'react';
 
 const NewUploads = () => {
     const [fileUploaded, setuploaded] = useState(false); // For button visibility
+    const [uploading, setUploading] = useState(false); // New uploading state
     const [files, setFiles] = useState([]);
     const [aiContent, setAi] = useState();
-    const [isLoading, setIsLoading] = useState(false); // Loading state
+    const [isLoading, setIsLoading] = useState(false); // Loading state for AI generation
     const [task, setTask] = useState();
     const currentDate = new Date().toISOString();
 
-    // console.log(aiContent)
     const handleRedo = () => {
         setuploaded(false);
         setFiles([]);
         setAi(null);
         setIsLoading(false);
+        setUploading(false); // Reset uploading state on redo
     };
 
     const handleTask = async (selectedTask) => {
-        setIsLoading(true); // Start loader
-        setTask(selectedTask)
+        setIsLoading(true); // Start loader for AI generation
+        setTask(selectedTask);
         
         const formData = new FormData();
         formData.append('task', selectedTask);
-
 
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/newtask/`, {
             method: "POST",
@@ -39,7 +39,6 @@ const NewUploads = () => {
         const data = await response.json();
 
         if (response.ok) {
-            // Select the correct key based on the selectedTask
             let content = "";
             if (selectedTask === "summarize") {
                 content = data.SummarizedContent;
@@ -48,16 +47,13 @@ const NewUploads = () => {
             } else if (selectedTask === "questions") {
                 content = data.Questions;
             }
-
-            // Set aiContent with the string content
             setAi(content);
         } else {
             console.error("Task submission failed");
         }
 
-        setIsLoading(false); // Stop loader
+        setIsLoading(false); // Stop loader for AI generation
     };
-
 
     return (
         <div className="xl:max-w-6xl lg:max-w-4xl md:max-w-2xl max-w-2xl flex justify-center items-center w-full flex-col px-4 h-auto relative">
@@ -67,12 +63,25 @@ const NewUploads = () => {
                         <h1 className="header xl:text-[2.5rem] lg:text-[2rem] md:text-[1.5rem] sm:text-[1.2rem] text-[1.2rem] text-center xl:leading-[4rem] lg:leading-[3.5rem] md:leading-[3rem] sm:leading-[2.5rem] leading-[2rem]">
                             Drop your <span className="text-[#cf0] font-bold">PDFs</span> here and watch magic happen!
                         </h1>
-                        <FileUploader setuploaded={setuploaded} setFiles={setFiles} files={files} />
+                        <FileUploader 
+                            setuploaded={setuploaded} 
+                            setFiles={setFiles} 
+                            setUploading={setUploading} // Update uploading state on file upload
+                            files={files} 
+                        />
                     </div>
 
                     {/* Show Loader */}
                     {isLoading && <AiLoader />}
 
+                    {/* "Please wait..." message for file upload */}
+                    {uploading && (
+                        <div className="w-full flex items-center justify-center">
+                            <p>Please wait, your file is being uploaded...</p>
+                        </div>
+                    )}
+
+                    {/* Display action buttons if PDF is uploaded */}
                     {!isLoading && fileUploaded && files[0]?.type === "application/pdf" && (
                         <div className="flex md:flex-row flex-wrap gap-2 justify-center sm:justify-between">
                             <Button onClick={() => handleTask("summarize")} className="px-4 py-2 rounded-md border border-neutral-300 bg-neutral-100 text-neutral-500 text-sm hover:-translate-y-1 transform transition duration-200 hover:shadow-md hover:bg-[#cf0] flex items-center gap-1">

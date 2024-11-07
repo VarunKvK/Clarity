@@ -4,12 +4,15 @@ import { MenuIcon, UserCircle2 } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import Dropmenu from './mini_components/Dropmenu';
+import Profile from './mini_components/Avatar';
+
 import { SignInButton, SignUpButton, useAuth } from '@clerk/nextjs';
 
 const Navbar = () => {
     const { isSignedIn, isLoaded } = useAuth();
     const [userId, setUserId] = useState();
     const [loading, setLoading] = useState(true);
+    const [user,setUser]=useState();
 
     useEffect(() => {
         if (isSignedIn) {
@@ -28,6 +31,7 @@ const Navbar = () => {
                     }
                     const data = await response.json();
                     setUserId(data.user._id);
+                    setUser(data.user);
                 } catch (error) {
                     console.error("Error fetching user data:", error);
                 } finally {
@@ -68,7 +72,7 @@ const Navbar = () => {
             </div>}
 
             {isSignedIn && <Link href={`/myspace/${userId}`} className="hidden md:block">
-                <UserCircle2 className="h-8 w-8" />
+                <Profile profileImage={user?.image} profileInitial={user?.name} className="h-8 w-8"/>
             </Link>}
 
             {isSignedIn && <div className="block md:hidden">

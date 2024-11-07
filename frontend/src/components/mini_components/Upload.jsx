@@ -5,13 +5,13 @@ import { useToast } from "@/hooks/use-toast";
 import { CheckCircle } from "lucide-react";
 import { SignInButton, useAuth } from "@clerk/nextjs";
 
-export function FileUploader({ files, setFiles, setuploaded }) {
+export function FileUploader({ files, setFiles, setuploaded, setUploading }) {
   const { toast } = useToast();
   const { isSignedIn } = useAuth();
 
   const handleFileUpload = async (f) => {
     setFiles(f);
-    setuploaded(true);
+    setUploading(true)
     try {
       if (f[0].type === "application/pdf") {
         const formData = new FormData();
@@ -31,6 +31,7 @@ export function FileUploader({ files, setFiles, setuploaded }) {
         } else {
           throw new Error("File upload failed");
         }
+        setuploaded(true);
       } else {
         toast({
           variant: "destructive",
@@ -47,6 +48,8 @@ export function FileUploader({ files, setFiles, setuploaded }) {
         title: "Upload failed!",
         description: "There was an error uploading the file.",
       });
+    }finally{
+      setUploading(false)
     }
   };
 

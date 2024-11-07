@@ -4,7 +4,7 @@ import { LayoutGrid } from 'lucide-react'
 import Link from 'next/link'
 
 const FilesList = ({ data }) => {
-    // console.log(data)
+    console.log(data)
     return (
         <div className=" flex flex-col w-full p-4 gap-4">
             <div className="flex items-center justify-between">
@@ -18,9 +18,13 @@ const FilesList = ({ data }) => {
                     </span>
                 </Link>
             </div>
-            <div className="grid grid-cols-3 gap-4">
-                {data?.map((notion) => (
-                    <FileInfo key={notion.properties.id} title={notion?.properties.properties.FileName?.title[0]}/>
+            <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
+                {data?.slice(0, 3).map((notion) => (
+                    <FileInfo
+                        key={notion.properties.id}
+                        title={notion?.properties.properties.FileName?.title[0]}
+                        desc={notion?.content[2].paragraph?.rich_text[0]}
+                    />
                 ))}
             </div>
         </div>
@@ -28,3 +32,5 @@ const FilesList = ({ data }) => {
 }
 
 export default FilesList
+
+// [0].content[2].paragraph.rich_text[0].plain_text

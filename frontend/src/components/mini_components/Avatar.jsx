@@ -4,9 +4,9 @@ import {
     AvatarImage,
   } from "@/components/ui/avatar"
   
-  export function Profile({profileImage,profileInitial}) {
+  export default function Profile({profileImage,profileInitial, className}) {
     return (
-      <Avatar className="h-[6rem] w-[6rem]">
+      <Avatar className={`${className}`}>
         <AvatarImage src={profileImage} alt="@shadcn"/>
         <AvatarFallback>{profileInitial}</AvatarFallback>
       </Avatar>
