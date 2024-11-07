@@ -51,7 +51,7 @@ export default function Home() {
 
   }, [isSignedIn, toast]);
 
-  if (!isLoaded || !isSignedIn || loading) {
+  if (loading) {
     return <Loading />;
 }
 

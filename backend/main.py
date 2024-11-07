@@ -25,21 +25,58 @@ genai.configure(api_key=os.getenv("GEMINI_KEY"))
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 def summarize_content(extracted_text):
-    prompt = f'''
-        You are an educational assistant helping students understand complex material. Summarize the following content from a PDF in a way that's easy to understand.
-        Include key points and organize them logically. Use bullet points for clarity, and add examples where necessary to clarify challenging concepts.
+    # prompt = f'''
+    #     You are an educational assistant helping students understand complex material. Summarize the following content from a PDF in a way that's easy to understand.
+    #     Include key points and organize them logically. Use bullet points for clarity, and add examples where necessary to clarify challenging concepts.
 
+    #     Content:
+    #     {extracted_text}
+
+    #     Please format the response as follows:
+    #     - The format should be '##' for header , '**' for paragraph and '```' for code snippet
+    #     - Based on the file that has been uploaded create a title to make it easy to access by the user.
+    #     - The topic heading needs to be bold and also it needs to be the header.
+    #     - The paragraphs should be of medium font style and it should be a paragraph.
+    #     - Bullet points for key points, definitions, and examples, with a double newline between each bullet for spacing.
+    #     - The summary should be concise and easy to understand.
+    # '''
+    
+    prompt = f'''
+        Summarize the key concepts and topics from the provided PDF in a clear, structured way that is easy for a beginner to understand. Follow these steps:
+
+        1. Identify the Main Topics:
+        - List the main topics or subtopics covered in the PDF.
+        - Organize these topics in a logical order, starting with the most fundamental concepts.
+
+        2. Simplify the Explanations:
+        - Explain each topic using simple, easy-to-understand language. 
+        - Avoid jargon, technical terms, or overly complex sentences.
+
+        3. Use Visual Aids:
+        - Incorporate relevant diagrams, illustrations, or flowcharts to help convey the concepts visually.
+        - Describe how these visual elements support the explanations.
+
+        4. Provide Examples:
+        - Give clear, relatable examples for each key concept to make the ideas more concrete.
+        - Explain how the examples help illustrate the topic.
+
+        5. Highlight Key Takeaways:
+        - Summarize the most important points or key takeaways that the reader should remember.
+        - Emphasize the essential information a beginner needs to understand the subject matter.
+
+        6. Encourage Engagement:
+        - Suggest exercises, practice problems, or questions the reader can use to reinforce their understanding.
+        - Explain how these interactive elements will help the reader learn the concepts more effectively.
+
+        Output Format:
+        Provide the summary in a well-organized, easy-to-read format. Use clear section headings, concise paragraphs, and formatting (e.g., bullet points, numbered lists) to enhance readability. The summary should be comprehensive yet concise, focusing on the key information a beginner needs to grasp the subject matter.
+        
+        The content is provided below
         Content:
         {extracted_text}
-
-        Please format the response as follows:
-        - The format should be '##' for header , '**' for paragraph and '```' for code snippet
-        - Based on the file that has been uploaded create a title to make it easy to access by the user.
-        - The topic heading needs to be bold and also it needs to be the header.
-        - The paragraphs should be of medium font style and it should be a paragraph.
-        - Bullet points for key points, definitions, and examples, with a double newline between each bullet for spacing.
-        - The summary should be concise and easy to understand.
+        
     '''
+    
     
     try:
         response = model.generate_content(prompt)
