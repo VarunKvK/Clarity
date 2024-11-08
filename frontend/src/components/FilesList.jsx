@@ -2,6 +2,7 @@ import React from 'react'
 import FileInfo from './mini_components/FileInfo'
 import { LayoutGrid } from 'lucide-react'
 import Link from 'next/link'
+import { TableContent } from './mini_components/TableContent'
 
 const FilesList = ({ data }) => {
     console.log(data)
@@ -18,14 +19,10 @@ const FilesList = ({ data }) => {
                     </span>
                 </Link>
             </div>
-            <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
-                {data?.slice(0, 3).map((notion) => (
-                    <FileInfo
-                        key={notion.properties.id}
-                        title={notion?.properties.properties.FileName?.title[0]}
-                        desc={notion?.content[2].paragraph?.rich_text[0]}
-                    />
-                ))}
+            <div className="">
+                <TableContent
+                    notionData={data}
+                />
             </div>
         </div>
     )
