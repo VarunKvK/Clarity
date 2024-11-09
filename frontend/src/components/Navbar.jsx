@@ -47,6 +47,7 @@ const Navbar = () => {
 
     const navcomponents = [
         { name: "Why Clarity?", href: "#why" },
+        { name: "Pricing", href: "/pricing" },
         { name: "Add Files", href: "/newuploads" },
         { name: "My Space", href: `/myspace/${userId}` },
         { name: "Terms & Condition", href: "/terms&conditions" },
