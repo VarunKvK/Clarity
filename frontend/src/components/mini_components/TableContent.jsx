@@ -32,7 +32,10 @@ export function TableContent({ notionData }) {
                         <TableCell className="font-medium truncate">{notion.properties?.properties.FileName?.title[0].plain_text}</TableCell>
                         <TableCell className="font-medium truncate">{notion.properties?.properties.FileTitle?.rich_text[0].plain_text}</TableCell>
                         <TableCell>
-                            <Badge variant="outline" className={`bg-${notion?.properties.properties.Type.select.color}-400 text-white`}>
+                            <Badge variant="outline" 
+                            // className={`bg-${notion?.properties?.properties?.Type?.select?.color}-400 text-white`}
+                            style={{ backgroundColor: notion?.properties?.properties?.Type?.select?.color, color: "white", border:"none"}}
+                            >
                                 {notion?.properties?.properties.Type?.select?.name}
                             </Badge>
 

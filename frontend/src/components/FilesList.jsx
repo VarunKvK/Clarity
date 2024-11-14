@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { TableContent } from './mini_components/TableContent'
 
 const FilesList = ({ data }) => {
-    console.log(data)
+    // console.log(data)
     return (
         <div className=" flex flex-col w-full p-4 gap-4">
             <div className="flex items-center justify-between">
@@ -21,7 +21,7 @@ const FilesList = ({ data }) => {
             </div>
             <div className="">
                 <TableContent
-                    notionData={data}
+                    notionData={data.slice(0,4)}
                 />
             </div>
         </div>

@@ -38,7 +38,7 @@ const Pricing = () => {
     const handlePaymentSuccess = (details) => {
         toast({
             title: "Payment Successful",
-            description: `Thank you for your payment. Your plan is ${plan.name}.`,
+            description: `Thank you for your payment.`,
         })
         console.log("Transaction details:", details);
     };
@@ -122,3 +122,74 @@ const Pricing = () => {
 };
 
 export default Pricing;
+
+
+// {
+//     "id": "1UL30148A98228613",
+//     "intent": "CAPTURE",
+//     "status": "COMPLETED",
+//     "purchase_units": [
+//         {
+//             "reference_id": "default",
+//             "amount": {
+//                 "currency_code": "USD",
+//                 "value": "4.99"
+//             },
+//             "payee": {
+//                 "email_address": "sb-4mpfo31944996@business.example.com",
+//                 "merchant_id": "GJGA74XBWW9WS"
+//             },
+//             "soft_descriptor": "PAYPAL *TEST STORE",
+//             "shipping": {
+//                 "name": {
+//                     "full_name": "Alex Max"
+//                 },
+//                 "address": {
+//                     "address_line_1": "463 Hiney Road",
+//                     "admin_area_2": "North Las Vegas",
+//                     "admin_area_1": "NV",
+//                     "postal_code": "89032",
+//                     "country_code": "US"
+//                 }
+//             },
+//             "payments": {
+//                 "captures": [
+//                     {
+//                         "id": "5A625711BW965183P",
+//                         "status": "COMPLETED",
+//                         "amount": {
+//                             "currency_code": "USD",
+//                             "value": "4.99"
+//                         },
+//                         "final_capture": true,
+//                         "seller_protection": {
+//                             "status": "NOT_ELIGIBLE"
+//                         },
+//                         "create_time": "2024-11-13T19:42:16Z",
+//                         "update_time": "2024-11-13T19:42:16Z"
+//                     }
+//                 ]
+//             }
+//         }
+//     ],
+//     "payer": {
+//         "name": {
+//             "given_name": "Alex",
+//             "surname": "Max"
+//         },
+//         "email_address": "spaceminimal09@gmail.com",
+//         "payer_id": "TPND7FDR5U3XC",
+//         "address": {
+//             "country_code": "US"
+//         }
+//     },
+//     "create_time": "2024-11-13T19:38:00Z",
+//     "update_time": "2024-11-13T19:42:16Z",
+//     "links": [
+//         {
+//             "href": "https://api.sandbox.paypal.com/v2/checkout/orders/1UL30148A98228613",
+//             "rel": "self",
+//             "method": "GET"
+//         }
+//     ]
+// }

@@ -77,6 +77,7 @@ const Dashboard = () => {
   if (loadingUserData || loadingNotionData) {
     return <Loading />;
   }
+  console.log(notionData)
 
   return (
     <div className="flex items-center w-full flex-col px-4 h-[90vh] relative pt-10">
