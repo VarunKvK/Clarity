@@ -27,7 +27,7 @@ const ProfileCard = ({ userData }) => {
         {userData && userData?.notionIntegrationStatus &&
         <Badge variant="outline" className="border border-[#cf0] rounded-full text-[#cf0] flex items-center gap-1">
           <Circle fill="#cf0" className='w-2'/>
-          <span className="hidden md:block text-sm font-medium">
+          <span className="hidden md:block text-xs font-medium">
           Notion Integrated
           </span>
           </Badge>
@@ -35,7 +35,7 @@ const ProfileCard = ({ userData }) => {
         {!userData && !userData?.notionIntegrationStatus &&
         <Badge variant="outline" className="border border-[#ff8000] rounded-full text-[#ff8000] flex items-center gap-1">
           <Circle fill="#ff8000" className='w-2'/>
-          <span className="hidden md:block text-sm font-medium">
+          <span className="hidden md:block text-xs font-medium">
           Notion Integrated
           </span>
           </Badge>

@@ -1,12 +1,13 @@
 'use client'
 import Profile from '@/components/mini_components/Avatar';
+import FileInfo from '@/components/mini_components/FileInfo';
 import Loading from '@/components/mini_components/Loader';
 import { TableContent } from '@/components/mini_components/TableContent';
 import { useToast } from '@/hooks/use-toast';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
-const MyFiles = () => {
+const Resources = () => {
     const { userId } = useParams();
     const { toast } = useToast();
     const [userData, setUserData] = useState(null);
@@ -78,25 +79,24 @@ const MyFiles = () => {
     if (loadingUserData || loadingNotionData) {
         return <Loading />;
     }
-
     return (
         <div className="w-full">
             <div className="flex items-center justify-between pt-8 px-6 pb-4">
                 <div className="leading-tight">
                     <h1 className="text-[3rem] font-medium">
-                        My Files
+                        My Resources
                     </h1>
-                    <p className="text-gray-200 font-normal opacity-50">This is where all the files you had uploaded is visible.</p>
+                    <p className="text-gray-200 font-normal opacity-50">This is where all the resources you had generated is visible.</p>
                 </div>
                 <Profile profileImage={userData?.image} profileInitial={userData?.name ? getInitials(userData.name) : ''} />
             </div>
-            <div className="p-4">
-                <TableContent
-                    notionData={notionData}
-                />
+            <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
+                {notionData?.map((notion) => (
+                    <FileInfo key={notion.properties.id} title={notion?.properties.properties.FileTitle?.rich_text[0]} desc={notion?.content[2].paragraph?.rich_text[0]} />
+                ))}
             </div>
         </div>
     )
 }
 
-export default MyFiles
+export default Resources

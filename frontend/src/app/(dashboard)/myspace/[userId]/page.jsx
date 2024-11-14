@@ -11,6 +11,7 @@ import { AlertContainer } from '@/components/mini_components/AlertContainer';
 import Loading from '@/components/mini_components/Loader';
 import { useToast } from '@/hooks/use-toast';
 import EmptyState from '@/components/mini_components/EmptyState';
+import SideBarPopover from '@/components/mini_components/SideBarPopover';
 
 const Dashboard = () => {
   const { userId } = useParams();
@@ -77,13 +78,14 @@ const Dashboard = () => {
   if (loadingUserData || loadingNotionData) {
     return <Loading />;
   }
-  console.log(notionData)
+  // console.log(notionData)
 
   return (
     <div className="flex items-center w-full flex-col px-4 h-[90vh] relative pt-10">
       <div className="flex items-center justify-between w-full">
         <ProfileCard userData={userData} />
-        <Settings2 />
+        <SideBarPopover userData={userData}/>
+        {/* <Settings2 /> */}
       </div>
       <Separator />
 
