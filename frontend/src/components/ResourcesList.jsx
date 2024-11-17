@@ -22,6 +22,7 @@ const ResourcesList = ({data}) => {
                 {data?.slice(0, 3).map((notion) => (
                     <FileInfo key={notion.properties.id} title={notion?.properties.properties.FileTitle?.rich_text[0]}
                     desc={notion?.content[2].paragraph?.rich_text[0]}
+                    notionurl={notion?.properties?.url}
                     />
                 ))}
             </div>

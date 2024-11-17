@@ -2,10 +2,21 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { Button } from '../ui/button'
-import { Trash } from 'lucide-react'
-import { Alert } from '../ui/alert'
+import { Eye, Trash } from 'lucide-react'
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
-const FileInfo = ({ title, desc }) => {
+const FileInfo = ({ title, desc,notionurl }) => {
+    console.log(notionurl)
     const url = usePathname()
     const containskeyword = url.includes("myresources")
     const [pathname, setPathname] = useState(false);
@@ -25,14 +36,24 @@ const FileInfo = ({ title, desc }) => {
                     <p className="truncate text-xs font-normal opacity-50">{desc?.plain_text}</p>
                 </div>
                 <div className="flex items-center justify-between">
-                    <Link href="/" className="rounded-lg bg-[#cf0] hover:bg-[#aecc33] px-4 py-2 font-medium text-[#111] text-sm">View</Link>
+                    {!pathname && (<Link href={notionurl} target="_blank" className="rounded-lg bg-[#cf0] hover:bg-[#aecc33] px-4 py-2 font-medium text-[#111] text-sm">View</Link>)}
+
+                    {pathname && (<Alert
+                        className="rounded-lg bg-[#cf0] hover:bg-[#aecc33] px-4 py-2 font-medium text-[#111] text-sm"
+                        icon={<Eye />}
+                        title={"You want to leave the page?"}
+                        description={"You are about to leave the page"}
+                        actions={"Leave"}
+                    />)}
+
+
                     {pathname && (
                         <Alert
-                            // icon={<Trash />}
-                            // title="Are you absolutely sure?"
-                            // desc="This action cannot be undone. This will permanently delete your account and remove your data from our servers."
-                            // action={"Continue"}
-                            className="bg-red-100 hover:bg-red-500 w-auto text-[#111] hover:text-[#fff]"
+                            className="bg-red-500 hover:bg-red-200 border-none"
+                            icon={<Trash />}
+                            title={"Are you absolutely sure?"}
+                            description={"This action cannot be undone. This will permanently delete your account and remove your data from our servers."}
+                            actions={"Continue"}
                         />
                     )}
 
@@ -43,3 +64,28 @@ const FileInfo = ({ title, desc }) => {
 }
 
 export default FileInfo
+
+export function Alert({ className, icon, title, description, actions }) {
+    return (
+        <AlertDialog>
+            <AlertDialogTrigger asChild>
+                <Button variant="outline" className={className}>
+                    {icon}
+                </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent className="bg-[#111] text-white">
+                <AlertDialogHeader>
+                    <AlertDialogTitle>{title}</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete your
+                        account and remove your data from our servers.
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel className="bg-[#cf0] text-[#111]">Cancel</AlertDialogCancel>
+                    <AlertDialogAction>{actions}</AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+    )
+}

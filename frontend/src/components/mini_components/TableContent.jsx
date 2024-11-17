@@ -13,7 +13,7 @@ import Link from "next/link"
 import { Button } from "../ui/button"
 
 export function TableContent({ notionData }) {
-    console.log("Notion", notionData.properties)
+    console.log("Notion", notionData)
     return (
         <Table>
             {/* <TableCaption>A list of your recent invoices.</TableCaption> */}

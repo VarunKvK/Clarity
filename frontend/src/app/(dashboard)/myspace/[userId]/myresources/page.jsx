@@ -76,7 +76,7 @@ const Resources = () => {
         fetchUserData();
     }, [userId]);
 
-    if (loadingUserData || loadingNotionData) {
+    if (loadingUserData || loadingNotionData ) {
         return <Loading />;
     }
     return (
@@ -90,9 +90,9 @@ const Resources = () => {
                 </div>
                 <Profile profileImage={userData?.image} profileInitial={userData?.name ? getInitials(userData.name) : ''} />
             </div>
-            <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
+            <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 p-4">
                 {notionData?.map((notion) => (
-                    <FileInfo key={notion.properties.id} title={notion?.properties.properties.FileTitle?.rich_text[0]} desc={notion?.content[2].paragraph?.rich_text[0]} />
+                    <FileInfo key={notion.properties.id} title={notion?.properties.properties.FileTitle?.rich_text[0]} desc={notion?.content[2].paragraph?.rich_text[0]} notionurl={notion?.properties?.url}/>
                 ))}
             </div>
         </div>
