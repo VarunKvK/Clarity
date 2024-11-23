@@ -64,7 +64,7 @@ const Dashboard = () => {
         toast({
           variant: "destructive",
           title: "Error loading Notion data",
-          description: `Failed to load recent uploads. Please try again.Error is: ${error}`,
+          description: `Failed to load recent uploads. Please try again.Error is: ${err}`,
         })
       } finally {
         setLoadingNotionData(false);

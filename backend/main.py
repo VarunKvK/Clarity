@@ -188,6 +188,7 @@ async def upload_file(file:UploadFile=File(...)):
     global extracted_text
     try:
         content= await file.read()
+        print(len(content))
 
         with BytesIO(content) as pdf_file:
             content=PyPDF2.PdfReader(pdf_file)

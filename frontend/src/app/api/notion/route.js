@@ -1,4 +1,7 @@
+import connectToDatabase from "@/lib/mongodb";
 import getDatabaseItems from "@/lib/notion";
+import { User } from "@/models/User";
+import { currentUser } from '@clerk/nextjs/server';
 import { Client } from "@notionhq/client";
 import { v4 as uuidv4 } from "uuid";
 
@@ -91,30 +94,76 @@ const parseAndConvertToNotionBlocks = (content) => {
 
 // Console the Notion Output
 export async function GET(req, res) {
+    const clerkuser = await currentUser();
+    if (!clerkuser) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const emailAddress = clerkuser.emailAddresses[0].emailAddress;
+
+    await connectToDatabase();
+
+    // Find the user in the database
+    const user = await User.findOne({ email: emailAddress });
+    if (!user) {
+        return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    const userId = user._id.toString(); // Get the userId for filtering
+
     const databaseId = process.env.NOTION_DATABASE_ID;
-    const data = await getDatabaseItems(databaseId);
+    try {
+        const data = await getDatabaseItems(databaseId);
 
-    const pages = await Promise.all(
-        data.map(async (item) => {
-            const pageId = item.id;
+        // Fetch pages from Notion and filter them by UserId property
+        const pages = await Promise.all(
+            data.map(async (item) => {
+                const pageId = item.id;
 
-            const pageProperties = await notion.pages.retrieve({ page_id: pageId });
+                const pageProperties = await notion.pages.retrieve({ page_id: pageId });
 
-            const pageContent = await notion.blocks.children.list({
-                block_id: pageId,
-            });
+                const userIdFromNotion = pageProperties.properties?.UserId?.rich_text?.[0]?.text?.content;
 
-            return {
-                properties: pageProperties,
-                content: pageContent.results,
-            };
-        })
-    );
+                if (userIdFromNotion === userId) {
+                    const pageContent = await notion.blocks.children.list({
+                        block_id: pageId,
+                    });
 
-    return Response.json({ pages });
+                    return {
+                        properties: pageProperties,
+                        content: pageContent.results,
+                    };
+                }
+
+                return null; // Skip pages not belonging to the user
+            })
+        );
+
+        // Filter out null entries from the results
+        const filteredPages = pages.filter((page) => page !== null);
+
+        return Response.json({ pages: filteredPages });
+    } catch (error) {
+        console.error("Error fetching Notion pages:", error);
+        return NextResponse.json({ error: "Failed to fetch Notion pages" }, { status: 500 });
+    }
 }
 
+
 export async function POST(req, res) {
+    const clerkuser = await currentUser();
+    if (!clerkuser) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    await connectToDatabase();
+
+    const emailAddress = clerkuser.emailAddresses[0].emailAddress;
+    let user = await User.findOne({ email:emailAddress });
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
     const { task, aiContent, files, formattedDate} = await req.json();
     const notionBlocks = parseAndConvertToNotionBlocks(aiContent);
     const title = aiContent.split('\n')[0].replace(/^##\s*/,'').trim();
@@ -128,6 +177,10 @@ export async function POST(req, res) {
                 SlugId: {
                     type: "rich_text",
                     rich_text: [{ type: "text", text: { content: slugId } }],
+                },
+                UserId: {
+                    type: "rich_text",
+                    rich_text: [{ type: "text", text: { content: user._id } }],
                 },
                 FileName: {
                     type: "title",

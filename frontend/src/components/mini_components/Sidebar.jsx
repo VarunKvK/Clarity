@@ -1,3 +1,5 @@
+'use client'
+
 import { Cable, FilePlusIcon, FolderOpen, GalleryVerticalEnd, Home, Settings, ShieldPlus } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 
@@ -15,9 +17,14 @@ import {
 import Link from "next/link"
 import Profile from "./Avatar"
 import SideBarPopover from "./SideBarPopover"
+import UpgradeInfo from "./UpgradeInfo"
+import { useEffect, useState } from "react"
 
 
 export function AppSidebar({ userData }) {
+    const [notion, setNotionData] = useState();
+    const [loadingNotion, setLoadingNotionData] = useState(true);
+
     const getInitials = (name) => {
         return name
             .split(" ")
@@ -58,6 +65,37 @@ export function AppSidebar({ userData }) {
             icon: Settings,
         },
     ]
+
+    useEffect(() => {
+
+        const fetchNotionData = async () => {
+            try {
+                const response = await fetch("/api/notion", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    },
+                });
+
+                if (!response.ok) throw new Error("Failed to fetch Notion data.");
+                const data = await response.json();
+                setNotionData(data?.pages);
+            } catch (err) {
+                console.error("Error fetching Notion data:", err);
+                setError("Failed to load Notion data.");
+                toast({
+                    variant: "destructive",
+                    title: "Error loading Notion data",
+                    description: `Failed to load recent uploads. Please try again.Error is: ${err}`,
+                })
+            } finally {
+                setLoadingNotionData(false);
+            }
+        };
+        fetchNotionData();
+    },[userData])
+
     return (
         <Sidebar>
             <SidebarContent className="bg-[#111] text-white">
@@ -99,13 +137,14 @@ export function AppSidebar({ userData }) {
                 </SidebarGroup>
             </SidebarContent>
             <SidebarFooter className="bg-[#111] text-white">
+                <UpgradeInfo userData={userData} notion={notion} loadingNotion={loadingNotion}/>
                 <Separator />
                 <div className="flex justify-between items-center py-1">
                     <div className="flex items-center gap-1">
                         <Profile profileImage={userData.image} profileInitial={getInitials(userData.name)} />
                         <p className="">{userData.name}</p>
                     </div>
-                    <SideBarPopover userData={userData} />
+                    <SideBarPopover userData={userData}/>
                 </div>
             </SidebarFooter>
         </Sidebar>

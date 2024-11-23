@@ -29,6 +29,10 @@ const GeneratedContent = ({ aiContent, task, files, date }) => {
     const [loading, setLoading] = useState(false);
     const {toast}=useToast();
     const formattedDate = new Date(date).toISOString().split("T")[0];
+    
+    //Get the length of the CONTENT GENERATED
+    // console.log("Charachter length after creating by GEMINI--->>",aiContent.length)
+    
     const saveOnNotion = async () => {
         setLoading(true);
         try {
