@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema({
   name: { type: String, default: "Clarity_User" },
   email: { type: String, required: true, unique: true },
   image: { type: String },
-  subscriptionLevel: { type: String, required: true, default: 'free' },
+  subscriptionLevel: { type: String, required: true, default: 'Free' },
   notionIntegrationStatus: { type: Boolean, default: false },
   notionAccessToken: { type: String },
   createdAt: { type: Date, default: Date.now },

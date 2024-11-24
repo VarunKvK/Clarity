@@ -2,14 +2,28 @@
 import React from "react";
 import { FileUpload } from "@/components/ui/file-upload";
 import { useToast } from "@/hooks/use-toast";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, ShieldAlert } from "lucide-react";
 import { SignInButton, useAuth } from "@clerk/nextjs";
+import { useRouter } from 'next/navigation';
 
-export function FileUploader({ files, setFiles, setuploaded, setUploading }) {
+
+export function FileUploader({ files, setFiles, setuploaded, setUploading,userPlan,notionPdfsCount,plan }) {
   const { toast } = useToast();
+  const router = useRouter();
+
   const { isSignedIn } = useAuth();
 
   const handleFileUpload = async (f) => {
+
+    if (notionPdfsCount >= userPlan[plan]) {
+      toast({
+        icon: <ShieldAlert size={24} />,
+        title: "Upgrade your plan!",
+        description: "You have reached your upload limit for this plan. Upgrade to unlock more features.",
+      });
+      router.push('/pricings'); // Redirect to pricing page
+      return;
+  }
     setFiles(f);
     setUploading(true)
     try {
