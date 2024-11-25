@@ -19,7 +19,7 @@ export async function GET(req) {
                 "Content-Type": "application/json",
                 Authorization: `Basic ${Buffer.from(
                     `${process.env.NOTION_CLIENT_ID}:${process.env.NOTION_CLIENT_SECRET}`
-                ).toString("base64")}`
+                ).toString("base64")}`,
             },
             body: JSON.stringify({
                 grant_type: "authorization_code",
@@ -29,6 +29,9 @@ export async function GET(req) {
         });
 
         const data = await response.json();
+
+        // Debug: Log Notion response data
+        console.log("Notion Response Data:", data);
 
         if (!response.ok) {
             return NextResponse.json({ error: data.error || "Failed to obtain access token" }, { status: response.status });
@@ -52,11 +55,10 @@ export async function GET(req) {
                 notionIntegrationStatus: true,
                 notionAccessToken: access_token,
             },
-            { new: true, upsert: false}
+            { new: true, upsert: true } // Ensure the record is created if it doesn't exist
         );
 
         return NextResponse.redirect(`${process.env.NEXT_PUBLIC_DEPLOYED_URL}/myspace/${user._id}`);
-        // return NextResponse.redirect(`http://localhost:3000/myspace/${user._id}`);
     } catch (error) {
         console.error("Token exchange error:", error);
         return NextResponse.json({ error: "Failed to complete authorization" }, { status: 500 });
