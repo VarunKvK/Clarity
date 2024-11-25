@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
   subscriptionLevel: { type: String, required: true, default: 'Free' },
   notionIntegrationStatus: { type: Boolean, default: false },
   notionAccessToken: { type: String },
+  notionDatabaseId: { type: String },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

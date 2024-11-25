@@ -111,7 +111,8 @@ export async function GET(req, res) {
 
     const userId = user._id.toString(); // Get the userId for filtering
 
-    const databaseId = process.env.NOTION_DATABASE_ID;
+    const databaseId = user.notionDatabaseId;
+    // const databaseId = process.env.NOTION_DATABASE_ID;
     try {
         const data = await getDatabaseItems(databaseId);
 
@@ -145,7 +146,7 @@ export async function GET(req, res) {
         return Response.json({ pages: filteredPages });
     } catch (error) {
         console.error("Error fetching Notion pages:", error);
-        return NextResponse.json({ error: "Failed to fetch Notion pages" }, { status: 500 });
+        return Response.json({ error: "Failed to fetch Notion pages" }, { status: 500 });
     }
 }
 
@@ -153,7 +154,7 @@ export async function GET(req, res) {
 export async function POST(req, res) {
     const clerkuser = await currentUser();
     if (!clerkuser) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     await connectToDatabase();
@@ -161,7 +162,7 @@ export async function POST(req, res) {
     const emailAddress = clerkuser.emailAddresses[0].emailAddress;
     let user = await User.findOne({ email:emailAddress });
     if (!user) {
-        return res.status(404).json({ message: "User not found" });
+        return Response.json({ message: "User not found" });
     }
 
     const { task, aiContent, files, formattedDate} = await req.json();

@@ -27,7 +27,7 @@ export async function GET(req, res) {
         name:username,
         email:emailAddress,
         image:imageUrl,
-        subscriptionLevel: "free",
+        subscriptionLevel: "Free",
       });
       return Response.json({
         message: "User created successfully",
