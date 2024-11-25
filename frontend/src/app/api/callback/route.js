@@ -55,8 +55,8 @@ export async function GET(req) {
             { new: true, upsert: false}
         );
 
-        // return NextResponse.redirect(`${process.env.NEXT_PUBLIC_DEPLOYED_URL}/myspace/${user._id}`);
-        return NextResponse.redirect(`http://localhost:3000/myspace/${user._id}`);
+        return NextResponse.redirect(`${process.env.NEXT_PUBLIC_DEPLOYED_URL}/myspace/${user._id}`);
+        // return NextResponse.redirect(`http://localhost:3000/myspace/${user._id}`);
     } catch (error) {
         console.error("Token exchange error:", error);
         return NextResponse.json({ error: "Failed to complete authorization" }, { status: 500 });
