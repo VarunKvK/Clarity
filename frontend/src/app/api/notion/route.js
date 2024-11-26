@@ -6,7 +6,7 @@ import { Client } from "@notionhq/client";
 import { v4 as uuidv4 } from "uuid";
 
 // Initialize Notion client
-const notion = new Client({ auth: process.env.NOTION_SECRET });
+const notion = new Client({ auth: process.env.NOTION_CLIENT_SECRET });
 
 // Utility function to parse aiContent into Notion-compatible blocks
 const parseAndConvertToNotionBlocks = (content) => {

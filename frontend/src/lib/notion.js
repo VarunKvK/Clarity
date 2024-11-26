@@ -2,7 +2,7 @@
 import { Client } from "@notionhq/client";
 
 // Initialize Notion client
-const notion = new Client({ auth: process.env.NOTION_SECRET });
+const notion = new Client({ auth: process.env.NOTION_CLIENT_SECRET });
 
 export default async function getDatabaseItems(databaseId) {
   try {
