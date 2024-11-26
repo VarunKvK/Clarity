@@ -31,10 +31,10 @@ export async function GET(req) {
       }),
     });
 
-    // console.log("Authorization Code:", authorizationCode);
-    // console.log("Redirect URI:", process.env.NEXT_PUBLIC_REDIRECT_URI);
-    // console.log("Client ID:", process.env.NOTION_CLIENT_ID);
-    // console.log("Client Secret:", process.env.NOTION_CLIENT_SECRET);
+    console.log("Authorization Code:", authorizationCode);
+    console.log("Redirect URI:", process.env.NEXT_PUBLIC_REDIRECT_URI);
+    console.log("Client ID:", process.env.NOTION_CLIENT_ID);
+    console.log("Client Secret:", process.env.NOTION_CLIENT_SECRET);
 
     const data = await response.json();
 
