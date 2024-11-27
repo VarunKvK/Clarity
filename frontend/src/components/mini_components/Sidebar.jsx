@@ -19,6 +19,7 @@ import Profile from "./Avatar"
 import SideBarPopover from "./SideBarPopover"
 import UpgradeInfo from "./UpgradeInfo"
 import { useEffect, useState } from "react"
+import { toast } from "@/hooks/use-toast"
 
 
 export function AppSidebar({ userData }) {
@@ -83,7 +84,7 @@ export function AppSidebar({ userData }) {
                 setNotionData(data?.pages);
             } catch (err) {
                 console.error("Error fetching Notion data:", err);
-                setError("Failed to load Notion data.");
+                // setError("Failed to load Notion data.");
                 toast({
                     variant: "destructive",
                     title: "Error loading Notion data",

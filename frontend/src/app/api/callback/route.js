@@ -1,14 +1,14 @@
 import connectToDatabase from "@/lib/mongodb";
 import { User } from "@/models/User";
 import { currentUser } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+// import { NextResponse } from "next/server";
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const authorizationCode = searchParams.get("code");
 
   if (!authorizationCode) {
-    return NextResponse.json(
+    return Response.json(
       { error: "Authorization code not provided" },
       { status: 400 }
     );
@@ -36,23 +36,24 @@ export async function GET(req) {
     console.log("Client ID:", process.env.NOTION_CLIENT_ID);
     console.log("Client Secret:", process.env.NOTION_CLIENT_SECRET);
 
+
     const data = await response.json();
 
     // Debug: Log Notion response data
     console.log("Notion Response Data:", data);
 
     if (!response.ok) {
-      return NextResponse.json(
+      return Response.json(
         { error: data.error || "Failed to obtain access token" },
         { status: response.status }
       );
     }
 
-    const { access_token,duplicated_template_id } = data;
+    const { access_token, duplicated_template_id } = data;
 
     const clerkuser = await currentUser();
     if (!clerkuser) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     await connectToDatabase();
@@ -70,14 +71,13 @@ export async function GET(req) {
       { new: true, upsert: true } // Ensure the record is created if it doesn't exist
     );
 
-    return NextResponse.redirect(
+    return Response.redirect(
       `${process.env.NEXT_PUBLIC_DEPLOYED_URL}/myspace/${user._id}`
     );
-    // return NextResponse.redirect(`http://localhost:3000/myspace/${user._id}`);
-
+    // return Response.redirect(`http://localhost:3000/myspace/${user._id}`);
   } catch (error) {
     console.error("Token exchange error:", error);
-    return NextResponse.json(
+    return Response.json(
       { error: "Failed to complete authorization" },
       { status: 500 }
     );

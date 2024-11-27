@@ -173,7 +173,7 @@ export async function POST(req, res) {
     try {
       // Create a new page in Notion
       const page = await notion.pages.create({
-            parent: { database_id: process.env.NOTION_DATABASE_ID },
+            parent: { database_id: user.notionDatabaseId },
             properties: {
                 SlugId: {
                     type: "rich_text",
