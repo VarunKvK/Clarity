@@ -3,6 +3,7 @@ import getDatabaseItems from "@/lib/notion";
 import { User } from "@/models/User";
 import { currentUser } from '@clerk/nextjs/server';
 import { Client } from "@notionhq/client";
+import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
 // Initialize Notion client
@@ -126,7 +127,7 @@ export async function GET(req, res) {
                 const userIdFromNotion = pageProperties.properties?.UserId?.rich_text?.[0]?.text?.content;
 
                 if (userIdFromNotion === userId) {
-                    const pageContent = await notion.blocks.children.list({
+                    const pageContent = await notion?.blocks.children.list({
                         block_id: pageId,
                     });
 
@@ -172,7 +173,7 @@ export async function POST(req, res) {
     
     try {
       // Create a new page in Notion
-      const page = await notion.pages.create({
+      const page = await notion?.pages.create({
             parent: { database_id: user.notionDatabaseId },
             properties: {
                 SlugId: {

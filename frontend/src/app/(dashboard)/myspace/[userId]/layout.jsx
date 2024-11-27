@@ -47,7 +47,7 @@ export default async function RootLayout({ children }) {
         <body className="bg-[#111111] text-white flex flex-col w-full items-center justify-center relative z-100">
           <SidebarProvider defaultOpen={defaultOpen}>
             <AppSidebar userData={userData} />
-            <SidebarTrigger />
+            <SidebarTrigger className="absolute md:relative z-20"/>
             {children}
             <Toaster />
           </SidebarProvider>
