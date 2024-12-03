@@ -16,6 +16,8 @@ const Resources = () => {
     const [loadingNotionData, setLoadingNotionData] = useState(true);
     const [error, setError] = useState(null);
 
+    console.log("NotionData from resources",notionData)
+
     const getInitials = (name) => {
         return name
             .split(" ")
@@ -92,7 +94,11 @@ const Resources = () => {
             </div>
             <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 p-4">
                 {notionData?.map((notion) => (
-                    <FileInfo key={notion.properties.id} title={notion?.properties.properties.FileTitle?.rich_text[0]} desc={notion?.content[2].paragraph?.rich_text[0]} notionurl={notion?.properties?.url}/>
+                    <FileInfo key={notion.properties.id} title={notion?.properties.properties.FileTitle?.rich_text[0]} desc={notion?.content[2].paragraph?.rich_text[0]} 
+                    // notionurl={notion?.properties?.url}
+                    slugId={notion?.properties.properties.SlugId?.rich_text[0]}
+                    userId={userId}
+                    />
                 ))}
             </div>
         </div>

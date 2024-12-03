@@ -5,7 +5,6 @@ import { currentUser } from "@clerk/nextjs/server";
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const authorizationCode = searchParams.get("code");
-  console.log("Authorization Code",authorizationCode)
 
   if (!authorizationCode) {
     return Response.json(

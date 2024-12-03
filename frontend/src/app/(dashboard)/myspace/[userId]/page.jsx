@@ -57,7 +57,7 @@ const Dashboard = () => {
 
         if (!response.ok) throw new Error("Failed to fetch Notion data.");
         const data = await response.json();
-        console.log("NotionData from reponse",data)
+        // console.log("NotionData from reponse",data)
         setNotionData(data?.pages);
       } catch (err) {
         console.error("Error fetching Notion data:", err);

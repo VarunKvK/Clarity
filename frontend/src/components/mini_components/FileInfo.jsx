@@ -15,8 +15,11 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 
-const FileInfo = ({ title, desc,notionurl }) => {
-    console.log(notionurl)
+const FileInfo = ({ title, desc,
+    // notionurl,
+    slugId,
+    userId
+ }) => {
     const url = usePathname()
     const containskeyword = url.includes("myresources")
     const [pathname, setPathname] = useState(false);
@@ -36,9 +39,9 @@ const FileInfo = ({ title, desc,notionurl }) => {
                     <p className="truncate text-xs font-normal opacity-50">{desc?.plain_text}</p>
                 </div>
                 <div className="flex items-center justify-between">
-                    {!pathname && (<Link href={notionurl} target="_blank" className="rounded-lg bg-[#cf0] hover:bg-[#aecc33] px-4 py-2 font-medium text-[#111] text-sm">View</Link>)}
+                    {pathname && (<Link href={`/myspace/${userId}/myresources/${slugId?.plain_text}`} className="rounded-lg bg-[#cf0] hover:bg-[#aecc33] px-4 py-2 font-medium text-[#111] text-sm">View</Link>)}
 
-                    {pathname && (<Alert
+                    {/* {pathname && (<Alert
                         className="rounded-lg bg-[#cf0] hover:bg-[#aecc33] px-4 py-2 font-medium text-[#111] text-sm"
                         icon={<Eye />}
                         title={"You want to leave the page?"}
@@ -55,7 +58,7 @@ const FileInfo = ({ title, desc,notionurl }) => {
                             description={"This action cannot be undone. This will permanently delete your account and remove your data from our servers."}
                             actions={"Continue"}
                         />
-                    )}
+                    )} */}
 
                 </div>
             </div>

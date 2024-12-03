@@ -5,10 +5,18 @@ import { Client } from "@notionhq/client";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
-// Helper: Initialize Notion client
+/**
+ * Helper: Initialize Notion client
+ * @param {string} accessToken - Notion API access token
+ * @returns {Client} - Notion client instance
+ */
 const initializeNotionClient = (accessToken) => new Client({ auth: accessToken });
 
-// Helper: Parse AI content into Notion-compatible blocks
+/**
+ * Helper: Parse AI content into Notion-compatible blocks
+ * @param {string} content - AI-generated content
+ * @returns {Array} - Array of Notion blocks
+ */
 const parseAndConvertToNotionBlocks = (content) => {
     const blocks = [];
     const lines = content.split("\n");
@@ -16,9 +24,11 @@ const parseAndConvertToNotionBlocks = (content) => {
     let codeContent = "";
     let codeLanguage = "javascript";
 
+    // Process content line by line
     lines.forEach((line) => {
         if (line.startsWith("```")) {
             if (insideCodeBlock) {
+                // End of a code block
                 blocks.push({
                     type: "code",
                     code: {
@@ -29,6 +39,7 @@ const parseAndConvertToNotionBlocks = (content) => {
                 codeContent = "";
                 insideCodeBlock = false;
             } else {
+                // Start of a code block
                 const parts = line.split(" ");
                 codeLanguage = parts.length > 1 ? parts[1] : "javascript";
                 insideCodeBlock = true;
@@ -36,6 +47,7 @@ const parseAndConvertToNotionBlocks = (content) => {
         } else if (insideCodeBlock) {
             codeContent += `${line}\n`;
         } else if (line.startsWith("##")) {
+            // Heading level 2
             blocks.push({
                 type: "heading_2",
                 heading_2: {
@@ -43,6 +55,7 @@ const parseAndConvertToNotionBlocks = (content) => {
                 },
             });
         } else if (line.startsWith("**") && line.endsWith("**")) {
+            // Bold text
             blocks.push({
                 type: "paragraph",
                 paragraph: {
@@ -56,6 +69,7 @@ const parseAndConvertToNotionBlocks = (content) => {
                 },
             });
         } else {
+            // Regular paragraph
             blocks.push({
                 type: "paragraph",
                 paragraph: {
@@ -68,7 +82,13 @@ const parseAndConvertToNotionBlocks = (content) => {
     return blocks;
 };
 
-// Helper: Verify Notion integration
+/**
+ * Helper: Verify Notion integration
+ * Ensures the user's Notion integration is valid and updates their status if invalid.
+ * @param {Object} user - MongoDB user object
+ * @param {Client} notion - Notion client instance
+ * @throws Will throw an error if the database cannot be accessed
+ */
 const verifyNotionIntegration = async (user, notion) => {
     if (!user.notionIntegrationStatus || !user.notionAccessToken || !user.notionDatabaseId) {
         throw new Error("Notion integration not configured for this user.");
@@ -79,6 +99,7 @@ const verifyNotionIntegration = async (user, notion) => {
         await notion.pages.retrieve({ page_id: user.notionDatabaseId });
     } catch (err) {
         console.error("Notion database access error:", err.message);
+        // Reset user's Notion integration status
         await User.findByIdAndUpdate(user._id, {
             notionIntegrationStatus: false,
             notionAccessToken: null,
@@ -88,7 +109,13 @@ const verifyNotionIntegration = async (user, notion) => {
     }
 };
 
-// Helper: Append blocks to a Notion page in chunks
+/**
+ * Helper: Append blocks to a Notion page in chunks
+ * Notion has a limit on the number of blocks that can be appended at once.
+ * @param {Client} notion - Notion client instance
+ * @param {string} pageId - Notion page ID
+ * @param {Array} blocks - Array of Notion blocks to append
+ */
 const appendBlocksInChunks = async (notion, pageId, blocks) => {
     for (let i = 0; i < blocks.length; i += 100) {
         const chunk = blocks.slice(i, i + 100);
@@ -99,6 +126,9 @@ const appendBlocksInChunks = async (notion, pageId, blocks) => {
     }
 };
 
+/**
+ * GET Request: Fetch Notion pages for the authenticated user
+ */
 export async function GET(req, res) {
     try {
         // Retrieve the currently logged-in user via Clerk
@@ -107,22 +137,20 @@ export async function GET(req, res) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
+        // Connect to MongoDB and fetch user
         const emailAddress = clerkuser.emailAddresses[0].emailAddress;
         await connectToDatabase();
-
-        // Fetch the user from the database
         const user = await User.findOne({ email: emailAddress });
         if (!user) {
             return NextResponse.json({ message: "User not found" }, { status: 404 });
         }
 
-        // Check if Notion is integrated for the user
+        // Verify user's Notion integration
         if (!user.notionIntegrationStatus || !user.notionAccessToken || !user.notionDatabaseId) {
             return NextResponse.json({ message: "Please integrate Notion first" }, { status: 200 });
         }
 
-        // Initialize Notion client
-        const notion = new Client({ auth: user.notionAccessToken });
+        const notion = initializeNotionClient(user.notionAccessToken);
 
         // Retrieve child blocks for the user's main Notion page
         const childBlocks = await notion.blocks.children.list({
@@ -133,8 +161,8 @@ export async function GET(req, res) {
         const databaseBlock = childBlocks.results.find((block) => block.type === "child_database");
 
         if (!databaseBlock) {
-            return NextResponse.json({ 
-                error: "No child database found inside the specified page." 
+            return NextResponse.json({
+                error: "No child database found inside the specified page.",
             }, { status: 404 });
         }
 
@@ -143,13 +171,12 @@ export async function GET(req, res) {
             database_id: databaseBlock.id,
             sorts: [
                 {
-                    property: 'UploadDate',
-                    direction: 'descending',
+                    property: "UploadDate",
+                    direction: "descending",
                 },
             ],
         });
 
-        // Ensure response has results
         if (!response || !response.results) {
             return NextResponse.json({ pages: [] }, { status: 200 });
         }
@@ -180,17 +207,20 @@ export async function GET(req, res) {
             })
         );
 
-        // Filter null results and send the response
-        const filteredPages = pages.filter(page => page !== null);
+        // Filter out null results
+        const filteredPages = pages.filter((page) => page !== null);
         return NextResponse.json({ pages: filteredPages });
 
     } catch (error) {
         console.error("Error fetching Notion pages:", error);
-        return NextResponse.json({
-            error: "Failed to fetch Notion pages",
-            details: error.message,
-            pages: [],
-        }, { status: 500 });
+        return NextResponse.json(
+            {
+                error: "Failed to fetch Notion pages",
+                details: error.message,
+                pages: [],
+            },
+            { status: 500 }
+        );
     }
 }
 
