@@ -37,6 +37,7 @@ export function FileUploader({ files, setFiles, setuploaded, setUploading,userPl
         });
 
         if (response.ok) {
+          
           toast({
             icon: <CheckCircle size={24} />,
             title: "File uploaded successfully!",

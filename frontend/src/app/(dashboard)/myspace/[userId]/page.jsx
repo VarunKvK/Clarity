@@ -57,15 +57,19 @@ const Dashboard = () => {
 
         if (!response.ok) throw new Error("Failed to fetch Notion data.");
         const data = await response.json();
+        console.log("NotionData from reponse",data)
         setNotionData(data?.pages);
       } catch (err) {
         console.error("Error fetching Notion data:", err);
         setError("Failed to load Notion data.");
-        toast({
-          variant: "destructive",
-          title: "Error loading Notion data",
-          description: `Failed to load recent uploads. Please try again.Error is: ${err}`,
-        })
+        // Only show toast for actual fetch/network errors
+        if (err.message !== "No Notion integration" && err.message !== "Empty database") {
+          toast({
+            variant: "destructive",
+            title: "Error loading Notion data",
+            description: `Failed to load recent uploads. Please try again.`,
+          });
+        }
       } finally {
         setLoadingNotionData(false);
       }
@@ -78,7 +82,7 @@ const Dashboard = () => {
   if (loadingUserData || loadingNotionData) {
     return <Loading />;
   }
-  // console.log(notionData)
+  console.log("NotionData",notionData)
 
   return (
     <div className="flex items-center w-full flex-col px-4 h-[90vh] relative pt-10">

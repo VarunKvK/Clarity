@@ -3,11 +3,14 @@ import { AiLoader } from '@/components/mini_components/AI_Genration_Loader';
 import GeneratedContent from '@/components/mini_components/GeneratedContent';
 import { FileUploader } from '@/components/mini_components/Upload';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 import { FileQuestion, NotepadText, PenTool, RotateCcw } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 const NewUploads = () => {
+  const { toast } = useToast();
+
     const [fileUploaded, setuploaded] = useState(false); // For button visibility
     const [uploading, setUploading] = useState(false); // New uploading state
     const [files, setFiles] = useState([]);
@@ -70,7 +73,7 @@ const NewUploads = () => {
                 setNotionData(data?.pages);
             } catch (err) {
                 console.error("Error fetching Notion data:", err);
-                setError("Failed to load Notion data.");
+                // setError("Failed to load Notion data.");
                 toast({
                     variant: "destructive",
                     title: "Error loading Notion data",

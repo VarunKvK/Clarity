@@ -36,28 +36,45 @@ const GeneratedContent = ({ aiContent, task, files, date }) => {
     const saveOnNotion = async () => {
         setLoading(true);
         try {
-            const response = await fetch('/api/notion', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ task, aiContent, files, formattedDate })
+            const response = await fetch("/api/notion", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    task,
+                    aiContent,
+                    files,
+                    formattedDate,
+                }),
             });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+            }
+    
             const data = await response.json();
-            console.log("New item added to Notion database:", data);
+    
+            toast({
+                title: "Content saved successfully",
+                description: "Your content has been saved to Notion.",
+            });
+    
+            console.log("New item added to Notion:", data);
         } catch (error) {
-            console.error("Error saving item to Notion:", error);
+
+            console.error("Error saving item to Notion:", error.message);
             toast({
                 variant: "destructive",
-                title: "There was an error saving",
-                description: "Your content has not been saved. Please try again!",
+                title: "Error saving content",
+                description: error.message || "Something went wrong while saving to Notion. Please try again.",
             });
         } finally {
             setLoading(false);
-            toast({
-                title: "Content saved successfully",
-                description: "Your content has been saved on Notion.",
-            });
         }
     };
+    
 
     return (
         <div className="xl:max-w-6xl lg:max-w-4xl md:max-w-2xl max-w-2xl w-full mt-4 p-8 border text-[#ffff] bg-[#111] rounded-[2rem] mb-8">

@@ -5,6 +5,7 @@ import { currentUser } from "@clerk/nextjs/server";
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const authorizationCode = searchParams.get("code");
+  console.log("Authorization Code",authorizationCode)
 
   if (!authorizationCode) {
     return Response.json(
@@ -45,12 +46,6 @@ export async function GET(req) {
     });
 
     const data = await response.json();
-
-    // Debugging logs
-    console.log("Authorization Code:", authorizationCode);
-    console.log("Redirect URI:", redirectUri);
-    console.log("Notion Response Data:", data);
-
     if (!response.ok) {
       console.error("Failed to exchange token:", data);
       return Response.json(
@@ -60,6 +55,7 @@ export async function GET(req) {
     }
 
     const { access_token, duplicated_template_id } = data;
+    console.log("Notion Response Data:", data)
 
     // Retrieve current user from Clerk
     const clerkUser = await currentUser();
@@ -95,7 +91,8 @@ export async function GET(req) {
     }
 
     // Redirect user to their space
-    return Response.redirect(`${process.env.NEXT_PUBLIC_DEPLOYED_URL}/myspace/${user._id}`);
+    // return Response.redirect(`${process.env.NEXT_PUBLIC_DEPLOYED_URL}/myspace/${user._id}`);
+    return Response.redirect(`http://localhost:3000//myspace/${user._id}`);
   } catch (error) {
     // Log detailed error for debugging
     console.error("Token exchange error:", error);

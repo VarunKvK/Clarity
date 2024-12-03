@@ -88,7 +88,7 @@ export function AppSidebar({ userData }) {
                 toast({
                     variant: "destructive",
                     title: "Error loading Notion data",
-                    description: `Failed to load recent uploads. Please try again.Error is: ${err}`,
+                    description: `Failed to load recent uploads.`,
                 })
             } finally {
                 setLoadingNotionData(false);
