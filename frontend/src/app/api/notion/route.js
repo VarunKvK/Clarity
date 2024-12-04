@@ -32,7 +32,7 @@ const parseAndConvertToNotionBlocks = (content) => {
                 blocks.push({
                     type: "code",
                     code: {
-                        rich_text: [{ type: "text", text: { content: codeContent.trim() } }],
+                        rich_text: [{ type: "text", text: { content: codeContent.trim() }, annotations: { code: true } }],
                         language: codeLanguage,
                     },
                 });

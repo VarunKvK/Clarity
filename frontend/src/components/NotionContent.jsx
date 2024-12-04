@@ -1,22 +1,23 @@
 import React from 'react';
 
 const NotionContent = ({ content }) => {
+  console.log("Content:", content);
   const renderBlock = (block) => {
     const { type } = block;
-
+    console.log("Block type:", type);
     switch (type) {
       case 'paragraph':
         return (
-          <p className="mb-4 text-gray-700">
+          <p className="mb-4">
             {block.paragraph.rich_text.map((text, index) => (
-              <span 
+              <span
                 key={index}
                 className={`
                   ${text.annotations.bold ? 'font-bold' : ''}
                   ${text.annotations.italic ? 'italic' : ''}
                   ${text.annotations.strikethrough ? 'line-through' : ''}
                   ${text.annotations.underline ? 'underline' : ''}
-                  ${text.annotations.code ? 'font-mono bg-gray-100 px-1 rounded' : ''}
+                  ${text.annotations.code ? 'font-mono px-1 rounded' : ''}
                 `}
               >
                 {text.text.content}
@@ -27,14 +28,14 @@ const NotionContent = ({ content }) => {
 
       case 'heading_1':
         return (
-          <h1 className="text-3xl font-bold mb-4">
+          <h1 className="text-8xl font-bold mb-4">
             {block.heading_1.rich_text[0]?.text.content}
           </h1>
         );
 
       case 'heading_2':
         return (
-          <h2 className="text-2xl font-bold mb-3">
+          <h2 className="text-4xl font-bold mb-3 text-[#cf0]">
             {block.heading_2.rich_text[0]?.text.content}
           </h2>
         );
@@ -66,7 +67,7 @@ const NotionContent = ({ content }) => {
 
       case 'code':
         return (
-          <pre className="bg-gray-100 p-4 rounded-lg mb-4 overflow-x-auto">
+          <pre className="bg-[#222] text-[#cf0] p-4 rounded-lg mb-4 overflow-x-auto">
             <code className="text-sm font-mono">
               {block.code.rich_text[0]?.text.content}
             </code>
@@ -86,12 +87,14 @@ const NotionContent = ({ content }) => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      {content?.map((block) => (
-        <div key={block.id}>
-          {renderBlock(block)}
-        </div>
-      ))}
+    <div className="w-full flex items-center justify-center mx-auto p-8">
+      <div className="max-w-4xl">
+        {content?.map((block) => (
+          <div key={block.id}>
+            {renderBlock(block)}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
