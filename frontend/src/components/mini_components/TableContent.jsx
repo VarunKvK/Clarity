@@ -13,14 +13,13 @@ import Link from "next/link"
 import { Button } from "../ui/button"
 
 export function TableContent({ notionData }) {
-    console.log("Notion", notionData)
     return (
         <Table>
             {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
             <TableHeader>
                 <TableRow>
                     <TableHead className="">Pdf</TableHead>
-                    <TableHead>Content Title</TableHead>
+                    {/* <TableHead className="w-[50%]">Content Title</TableHead> */}
                     <TableHead>Type</TableHead>
                     <TableHead className="text-right">Uploaded On</TableHead>
                     <TableHead className="text-right">Link</TableHead>
@@ -29,8 +28,16 @@ export function TableContent({ notionData }) {
             <TableBody>
                 {notionData?.map((notion) => (
                     <TableRow key={notion.properties?.properties.SlugId?.rich_text[0].plain_text}>
-                        <TableCell className="font-medium truncate">{notion.properties?.properties.FileName?.title[0].plain_text}</TableCell>
-                        <TableCell className="font-medium truncate">{notion.properties?.properties.FileTitle?.rich_text[0].plain_text}</TableCell>
+                        <TableCell className="">
+                            <p className="font-medium truncate w-[80%]">
+                            {notion.properties?.properties.FileName?.title[0].plain_text}
+                            </p>
+                        </TableCell>
+                        {/* <TableCell className="w-[50%]">
+                            <p className="font-medium truncate w-[50%]">
+                            {notion.properties?.properties.FileTitle?.rich_text[0].plain_text}
+                            </p>
+                        </TableCell> */}
                         <TableCell>
                             <Badge variant="outline" 
                             // className={`bg-${notion?.properties?.properties?.Type?.select?.color}-400 text-white`}
