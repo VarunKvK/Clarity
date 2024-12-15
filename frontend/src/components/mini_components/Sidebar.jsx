@@ -57,12 +57,12 @@ export function AppSidebar({ userData }) {
         },
         {
             title: "Integration",
-            url: `/integration`,
+            url: `/myspace/${userData?._id}/integration`,
             icon: Cable,
         },
         {
             title: "Settings",
-            url: "/settings",
+            url: `/myspace/${userData?._id}/settings`,
             icon: Settings,
         },
     ]
