@@ -90,8 +90,8 @@ export async function GET(req) {
     }
 
     // Redirect user to their space
-    // return Response.redirect(`${process.env.NEXT_PUBLIC_DEPLOYED_URL}/myspace/${user._id}`);
-    return Response.redirect(`http://localhost:3000//myspace/${user._id}`);
+    return Response.redirect(`${process.env.NEXT_PUBLIC_DEPLOYED_URL}/myspace/${user._id}`);
+    // return Response.redirect(`http://localhost:3000//myspace/${user._id}`);
   } catch (error) {
     // Log detailed error for debugging
     console.error("Token exchange error:", error);
