@@ -22,6 +22,8 @@ const NewUploads = () => {
     const [userData, setUserData] = useState();
     //NotionDAta
     const [notion, setNotionData] = useState(null);
+    //Notion IntegratioStatus
+    const [notionIntegrate, setNotionIntegrate] = useState();
     //USerDAtaLoader
     const [loading, setLoadingUserData] = useState();
     //NotionDAtaLoader
@@ -51,12 +53,14 @@ const NewUploads = () => {
                 if (!response.ok) throw new Error("Failed to fetch user data.");
                 const data = await response.json();
                 setUserData(data?.user);
+                setNotionIntegrate(data?.user?.notionIntegrationStatus)
             } catch (err) {
                 console.error("Error fetching user data:", err);
                 setError("Failed to load user data.");
             } finally {
                 setLoadingUserData(false);
             }
+    
         };
         const fetchNotionData = async () => {
             try {
@@ -83,11 +87,10 @@ const NewUploads = () => {
                 setLoadingNotionData(false);
             }
         };
-
         fetchUserData();
         fetchNotionData();
     }, [])
-
+    
     const handleRedo = () => {
         setuploaded(false);
         setFiles([]);
@@ -126,7 +129,6 @@ const NewUploads = () => {
 
         setIsLoading(false); // Stop loader for AI generation
     };
-
     return (
         <div className="xl:max-w-6xl lg:max-w-4xl md:max-w-2xl max-w-2xl flex justify-center items-center w-full flex-col px-4 h-auto relative">
             <div className="h-full flex items-center relative z-100">
@@ -216,7 +218,7 @@ const NewUploads = () => {
                     {/* Display AI content if available */}
                     {aiContent && (
                         <div className="xl:max-w-6xl lg:max-w-4xl md:max-w-2xl sm:max-w-xl max-w-md w-full flex items-center justify-center">
-                            <GeneratedContent aiContent={aiContent} task={task} files={files[0].name} date={currentDate} />
+                            <GeneratedContent aiContent={aiContent} task={task} files={files[0].name} date={currentDate} notionIntegrate={notionIntegrate}/>
                         </div>
                     )}
                 </div>

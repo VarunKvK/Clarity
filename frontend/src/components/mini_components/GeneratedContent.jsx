@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import "../../app/globals.css";
-import { LoaderCircle, Save, Sparkles } from 'lucide-react';
+import { LoaderCircle, Save, Sparkles, Workflow } from 'lucide-react';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
@@ -25,14 +25,14 @@ const parseQuestions = (content) => {
     });
 };
 
-const GeneratedContent = ({ aiContent, task, files, date }) => {
+const GeneratedContent = ({ aiContent, task, files, date, notionIntegrate }) => {
     const [loading, setLoading] = useState(false);
-    const {toast}=useToast();
+    const { toast } = useToast();
     const formattedDate = new Date(date).toISOString().split("T")[0];
-    
+
     //Get the length of the CONTENT GENERATED
     // console.log("Charachter length after creating by GEMINI--->>",aiContent.length)
-    
+
     const saveOnNotion = async () => {
         setLoading(true);
         try {
@@ -48,19 +48,19 @@ const GeneratedContent = ({ aiContent, task, files, date }) => {
                     formattedDate,
                 }),
             });
-    
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
             }
-    
+
             const data = await response.json();
-    
+
             toast({
                 title: "Content saved successfully",
                 description: "Your content has been saved to Notion.",
             });
-    
+
             console.log("New item added to Notion:", data);
         } catch (error) {
 
@@ -74,7 +74,7 @@ const GeneratedContent = ({ aiContent, task, files, date }) => {
             setLoading(false);
         }
     };
-    
+
 
     return (
         <div className="xl:max-w-6xl lg:max-w-4xl md:max-w-2xl max-w-2xl w-full mt-4 p-8 border text-[#ffff] bg-[#111] rounded-[2rem] mb-8">
@@ -83,16 +83,27 @@ const GeneratedContent = ({ aiContent, task, files, date }) => {
                     <Sparkles />
                     <h1 className="font-semibold">Generated Content</h1>
                 </div>
-                <Button onClick={saveOnNotion} disabled={loading} className="flex items-center gap-2 px-6 py-2 bg-white text-[#111] rounded-lg font-medium transform hover:-translate-y-1 hover:bg-[#cf0] transition duration-400">
-                    {loading ? (
-                        <LoaderCircle className="animate-spin text-gray-500" size={16} />
-                    ) : (
-                        <span className="flex items-center gap-1">
-                            <Save/>
-                            Save in Notion
+                {!notionIntegrate ?
+                    (
+                        <Button className="flex items-center gap-2 px-6 py-2 bg-white text-[#111] rounded-lg font-medium transform hover:-translate-y-1 hover:bg-[#cf0] transition duration-400">
+                            <span className="flex items-center gap-1">
+                                <Workflow />
+                                <Link
+                                    href={process.env.NEXT_PUBLIC_AUTHORIZATION_URL}>
+                                    Integrate Notion
+                                </Link>
                             </span>
-                    )}
-                </Button>
+                        </Button>
+                    ) : (<Button onClick={saveOnNotion} disabled={loading} className="flex items-center gap-2 px-6 py-2 bg-white text-[#111] rounded-lg font-medium transform hover:-translate-y-1 hover:bg-[#cf0] transition duration-400">
+                        {loading ? (
+                            <LoaderCircle className="animate-spin text-gray-500" size={16} />
+                        ) : (
+                            <span className="flex items-center gap-1">
+                                <Save />
+                                Save in Notion
+                            </span>
+                        )}
+                    </Button>)}
             </div>
 
             {/* Conditional Rendering based on Task */}
